@@ -1,0 +1,7 @@
+.RefImage {
+    position: absolute;
+    user-select: none;
+    draggable: false;
+    display: inline-block;
+    background-color: blue;
+}
