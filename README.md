@@ -17,7 +17,6 @@
 
 ## Approach
 - nextjs
-- ???
 
 
 ## Default Next.js stuff
