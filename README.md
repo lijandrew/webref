@@ -1,5 +1,3 @@
-# WebRef
-
 ## Planning
 ### idea
 - browser-based reference board (like PureRef)
@@ -18,5 +16,5 @@
 - optimal auto-arrange images
 
 ## Approach
-- Next.js
+- nextjs
 - ???
