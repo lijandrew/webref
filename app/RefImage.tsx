@@ -60,7 +60,7 @@ export default function RefImage({
       }}
     >
       <div className={styles.RefImage}>
-        <img draggable="false" src={url} />
+        <img draggable="false" src={url} className={styles.innerImg} />
       </div>
     </Rnd>
   );

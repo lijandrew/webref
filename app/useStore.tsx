@@ -20,7 +20,7 @@ const useStore = create<State>((set) => ({
           url={url}
           defaultX={0}
           defaultY={0}
-          defaultWidth="auto"
+          defaultWidth={300} // Defaulting this to 300px for now.
         />,
       );
       return { refMap: newRefMap };
