@@ -1,25 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import UploadButton from "./UploadButton";
 import Canvas from "./Canvas";
 
-// Describes position and scale of an image
-export type Metadata = {
-  x: number;
-  y: number;
-  scale: number;
-};
-
-// Maps <file url> to <Metadata object describing position and scale>
-export type ImageMap = Map<string, Metadata>;
+// Maps file object url to RefImage component. Url as key allows for component to search and delete itself.
+export type RefMap = Map<string, React.JSX.Element>;
+export type SetRefMap = (refMap: RefMap) => void;
 
 export default function Home() {
-  const [imageMap, setImageMap] = useState<ImageMap>(new Map());
+  const [refMap, setRefMap] = useState<RefMap>(new Map());
   return (
     <main>
-      <UploadButton imageMap={imageMap} setImageMap={setImageMap} />
-      <Canvas imageMap={imageMap} setImageMap={setImageMap} />
+      <UploadButton refMap={refMap} setRefMap={setRefMap} />
+      <Canvas refMap={refMap} setRefMap={setRefMap} />
     </main>
   );
 }

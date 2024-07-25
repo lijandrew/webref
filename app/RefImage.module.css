@@ -1,7 +1,7 @@
 .RefImage {
-    position: absolute;
-    user-select: none;
-    draggable: false;
-    display: inline-block;
     background-color: blue;
+}
+
+.selected {
+    border: 5px solid cyan;
 }

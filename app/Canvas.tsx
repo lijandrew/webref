@@ -1,22 +1,12 @@
-"use client";
-
 import React, { useRef } from "react";
-import type { ImageMap, Metadata } from "./page";
-import RefImage from "./RefImage";
+import type { RefMap, SetRefMap } from "./page";
 import styles from "./Canvas.module.css";
 
-interface Props {
-  imageMap: ImageMap;
-  setImageMap: (imageMap: ImageMap) => void;
-}
+type Props = {
+  refMap: RefMap;
+  setRefMap: SetRefMap;
+};
 
-export default function Canvas({ imageMap, setImageMap }: Props) {
-  const getImgs = () => {
-    const imgs = [];
-    for (const [url, metadata] of Array.from(imageMap.entries())) {
-      imgs.push(<RefImage url={url} />);
-    }
-    return imgs;
-  };
-  return <div className={styles.canvas}>{getImgs()}</div>;
+export default function Canvas({ refMap, setRefMap }: Props) {
+  return <div className={styles.canvas}> {Array.from(refMap.values())} </div>;
 }

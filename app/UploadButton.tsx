@@ -1,34 +1,33 @@
-"use client";
 import React from "react";
-import type { ImageMap, Metadata } from "./page";
+import RefImage from "./RefImage";
+import type { RefMap, SetRefMap } from "./page";
 
-interface Props {
-  imageMap: ImageMap;
-  setImageMap: (imageMap: ImageMap) => void;
-}
+type Props = {
+  refMap: RefMap;
+  setRefMap: SetRefMap;
+};
 
-export default function UploadButton({ imageMap, setImageMap }: Props) {
+export default function UploadButton({ refMap, setRefMap }: Props) {
+  // Creates new RefImage components, assumes no previously saved position or width.
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const files = Array.from(e.target.files || []);
-    const newImageMap = new Map(imageMap); // Shallow copy bc state is immutable
+    const newRefMap = new Map(refMap); // Shallow copy for setState
     for (const file of files) {
-      const url = URL.createObjectURL(file); // Creates url referencing the file to use as img src
-      const metadata: Metadata = {
-        // Default initial position and scale
-        x: 0,
-        y: 0,
-        scale: 1,
-      };
-      newImageMap.set(url, metadata);
+      // For each file, create URL and map it to RefImage component
+      const url = URL.createObjectURL(file);
+      newRefMap.set(
+        url,
+        <RefImage url={url} defaultX={0} defaultY={0} defaultWidth="auto" />,
+      );
     }
-    setImageMap(newImageMap);
+    setRefMap(newRefMap);
   }
   return (
     <input
       onChange={handleChange}
       type="file"
       multiple
-      accept=".png,.jpg,.jpeg"
+      accept=".png,.jpg,.jpeg,.gif"
     />
   );
 }
