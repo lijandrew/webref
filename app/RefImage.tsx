@@ -37,12 +37,17 @@ export default function RefImage({
     const coord = rnd.current.getDraggablePosition();
     x.current = coord.x;
     y.current = coord.y;
+    console.log(rnd.current.getSelfElement().style.transform);
   }
 
   function handleResizeStop() {
     // Surface width from Rnd (height not needed b/c lockAspectRatio)
     if (!rnd.current) return;
     width.current = Number(rnd.current.resizable.state.width);
+  }
+
+  function onMouseDown(e: MouseEvent) {
+    e.stopPropagation(); // Prevent dragging from propagating to <Canvas />
   }
 
   return (
@@ -52,12 +57,14 @@ export default function RefImage({
       onDragStop={handleDragStop}
       onResizeStop={handleResizeStop}
       onContextMenu={handleContextMenu}
+      onMouseDown={onMouseDown}
       default={{
         x: defaultX,
         y: defaultY,
         width: defaultWidth,
         height: "auto",
       }}
+      // scale={scale}
     >
       <div className={styles.RefImage}>
         <img draggable="false" src={url} className={styles.innerImg} />
