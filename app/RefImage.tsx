@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styles from "./RefImage.module.css";
 import { Rnd } from "react-rnd";
 
@@ -19,18 +19,21 @@ export default function RefImage({
   const x = useRef(0);
   const y = useRef(0);
   const width = useRef(0);
-  const handleDragStop = () => {
+
+  function handleDragStop() {
     // Surface x, y from Rnd
     if (!rnd.current) return;
     const coord = rnd.current.getDraggablePosition();
     x.current = coord.x;
     y.current = coord.y;
-  };
-  const handleResizeStop = () => {
+  }
+
+  function handleResizeStop() {
     // Surface width from Rnd (height not needed b/c lockAspectRatio)
     if (!rnd.current) return;
     width.current = Number(rnd.current.resizable.state.width);
-  };
+  }
+
   return (
     <Rnd
       ref={rnd}

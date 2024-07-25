@@ -1,12 +1,8 @@
 import React, { useRef } from "react";
-import type { RefMap, SetRefMap } from "./page";
+import useStore from "./useStore";
 import styles from "./Canvas.module.css";
 
-type Props = {
-  refMap: RefMap;
-  setRefMap: SetRefMap;
-};
-
-export default function Canvas({ refMap, setRefMap }: Props) {
+export default function Canvas() {
+  const refMap = useStore((state) => state.refMap);
   return <div className={styles.canvas}> {Array.from(refMap.values())} </div>;
 }
