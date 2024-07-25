@@ -5,6 +5,7 @@ import RefImage from "./RefImage";
 type State = {
   refMap: Map<string, React.JSX.Element>;
   addRef: (url: string) => void;
+  delRef: (url: string) => void;
 };
 
 const useStore = create<State>((set) => ({
@@ -22,6 +23,12 @@ const useStore = create<State>((set) => ({
           defaultWidth="auto"
         />,
       );
+      return { refMap: newRefMap };
+    }),
+  delRef: (url: string) =>
+    set((state) => {
+      const newRefMap = new Map(state.refMap);
+      newRefMap.delete(url);
       return { refMap: newRefMap };
     }),
 }));

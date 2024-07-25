@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import styles from "./RefImage.module.css";
 import { Rnd } from "react-rnd";
+import useStore from "./useStore";
 
 type Props = {
   url: string;
@@ -15,10 +16,20 @@ export default function RefImage({
   defaultY,
   defaultWidth,
 }: Props) {
+  const delRef = useStore((state) => state.delRef);
+
   const rnd = useRef<Rnd | null>(null);
   const x = useRef(0);
   const y = useRef(0);
   const width = useRef(0);
+
+  function handleContextMenu(e: React.MouseEvent) {
+    // Temporary delete functionality on right-click
+    e.preventDefault();
+    e.stopPropagation();
+    URL.revokeObjectURL(url);
+    delRef(url);
+  }
 
   function handleDragStop() {
     // Surface x, y from Rnd
@@ -40,6 +51,7 @@ export default function RefImage({
       lockAspectRatio={true}
       onDragStop={handleDragStop}
       onResizeStop={handleResizeStop}
+      onContextMenu={handleContextMenu}
       default={{
         x: defaultX,
         y: defaultY,
