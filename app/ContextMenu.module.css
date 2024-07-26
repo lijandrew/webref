@@ -1,0 +1,16 @@
+.ContextMenu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: black;
+}
+
+.ContextMenu>* {
+    margin: 10px;
+    padding: 10px;
+}
+
+.disabled {
+    background-color: grey;
+    pointer-events: none;
+}

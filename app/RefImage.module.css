@@ -1,8 +1,11 @@
 .RefImage {
-    width: 300px;
-    height: 300px;
+    user-select: none;
 }
 
 .innerImg {
-    max-width: 100%; /* Important! Keeps the image from overflowing. */
+    max-width: 100%; /* Prevents image from overflowing Rnd */
+}
+
+.selected {
+    outline: 3px solid cyan; /* outline instead of border to not affect size */
 }

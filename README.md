@@ -11,6 +11,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 - [x] move and resize images
 - [ ] pan and zoom canvas
 - [ ] arrange images optimally
+- [ ] toolbar
 
 ## saving, importing, exporting
 

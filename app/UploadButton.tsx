@@ -3,6 +3,7 @@ import useStore from "./useStore";
 
 export default function UploadButton() {
   const addRef = useStore((state) => state.addRef);
+
   // Creates new RefImages, assumes no previously saved position or width.
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const files = Array.from(e.target.files || []);
@@ -11,6 +12,7 @@ export default function UploadButton() {
       addRef(url);
     }
   }
+
   return (
     <input
       onChange={handleChange}
