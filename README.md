@@ -4,14 +4,14 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## canvas
 
-- [x] add image by uploading file
 - [ ] add image by pasting
 - [ ] add image by pasting link
-- [x] delete image
-- [x] move and resize images
 - [ ] pan and zoom canvas
 - [ ] arrange images optimally
-- [ ] toolbar
+- [x] add image by uploading file
+- [x] delete image
+- [x] move and resize images
+- [x] context menu
 
 ## saving, importing, exporting
 

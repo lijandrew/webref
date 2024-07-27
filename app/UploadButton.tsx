@@ -1,5 +1,6 @@
 import React from "react";
 import useStore from "./useStore";
+import styles from "./UploadButton.module.css";
 
 export default function UploadButton() {
   const addRef = useStore((state) => state.addRef);
@@ -11,10 +12,12 @@ export default function UploadButton() {
       const url = URL.createObjectURL(file); // Create URL referencing file
       addRef(url);
     }
+    e.target.value = ""; // Clear input value after adding the references
   }
 
   return (
     <input
+      className={styles.UploadButton}
       onChange={handleChange}
       type="file"
       multiple

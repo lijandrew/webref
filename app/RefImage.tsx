@@ -19,6 +19,7 @@ export default function RefImage({
   const selectedUrl = useStore((state) => state.selectedUrl);
   const setSelectedUrl = useStore((state) => state.setSelectedUrl);
   const showContextMenu = useStore((state) => state.showContextMenu);
+  const hideContextMenu = useStore((state) => state.hideContextMenu);
 
   const rnd = useRef<Rnd | null>(null);
   const x = useRef(0);
@@ -41,6 +42,7 @@ export default function RefImage({
 
   function handleMouseDown(e: MouseEvent) {
     e.stopPropagation(); // Prevent dragging from propagating to <Canvas />
+    hideContextMenu();
     setSelectedUrl(url);
   }
 
