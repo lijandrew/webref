@@ -4,17 +4,18 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## canvas
 
-- [ ] add image by pasting
-- [ ] add image by pasting link
-- [ ] pan and zoom canvas
+- [ ] UI cleanup
 - [ ] arrange images optimally
+- [ ] pan and zoom canvas
 - [x] add image by uploading file
 - [x] delete image
 - [x] move and resize images
 - [x] context menu
+- [x] add image by pasting
+- [x] delete and paste using keyboard
 
 ## saving, importing, exporting
 
 - [ ] export archive (zip: images, JSON)
 - [ ] import archive
-- [ ] auto-save to IndexedDB
+- [ ] auto-save to IndexedDB - could I just save the entire refMap???
