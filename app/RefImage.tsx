@@ -77,6 +77,18 @@ export default function RefImage({
           className={`${styles.innerImg} ${selectedUrl == url ? styles.selected : ""}`}
           alt=""
         />
+        {selectedUrl == url && (
+          <React.Fragment>
+            <div className={`${styles.handle} ${styles.handle1}`} />
+            <div className={`${styles.handle} ${styles.handle2}`} />
+            <div className={`${styles.handle} ${styles.handle3}`} />
+            <div className={`${styles.handle} ${styles.handle4}`} />
+            <div className={`${styles.smallHandle} ${styles.smallHandle1}`} />
+            <div className={`${styles.smallHandle} ${styles.smallHandle2}`} />
+            <div className={`${styles.smallHandle} ${styles.smallHandle3}`} />
+            <div className={`${styles.smallHandle} ${styles.smallHandle4}`} />
+          </React.Fragment>
+        )}
       </div>
     </Rnd>
   );

@@ -1,11 +1,76 @@
 .RefImage {
+    position: relative;
     user-select: none;
+    -webkit-user-select: none;
 }
 
 .innerImg {
     max-width: 100%; /* Prevents image from overflowing Rnd */
+    display: block;
+    /*
+    "display: block" removes the small gap below imgs
+    imgs default to inline display, which have "descenders" (think line height for text)
+    See https://albertwalicki.com/learn/solutions/extra-space-below-image
+    */
 }
 
 .selected {
-    outline: 3px solid cyan; /* outline instead of border to not affect size */
+    outline: 1px solid cyan; /* outline instead of border to not affect size */
+}
+
+.handle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: cyan;
+    transform: translate(-50%, -50%);
+}
+
+.handle1 {
+    top: 0;
+    left: 0;
+}
+
+.handle2 {
+    top: 0;
+    left: 100%;
+}
+
+.handle3 {
+    top: 100%;
+    left: 0%;
+}
+
+.handle4 {
+    top: 100%;
+    left: 100%;
+}
+
+.smallHandle {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: cyan;
+    transform: translate(-50%, -50%);
+}
+
+.smallHandle1{
+    top: 0;
+    left: 50%;
+}
+
+.smallHandle2 {
+    top: 50%;
+    left: 100%;
+}
+
+.smallHandle3 {
+    top: 100%;
+    left: 50%;
+}
+
+.smallHandle4 {
+    top: 50%;
+    left: 0;
 }
