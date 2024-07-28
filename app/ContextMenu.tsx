@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import useStore from "./useStore";
 import styles from "./ContextMenu.module.css";
+import ContextMenuButton from "./ContextMenuButton";
 
 export default function ContextMenu() {
   const addRef = useStore((state) => state.addRef);
@@ -69,13 +70,13 @@ export default function ContextMenu() {
         transform: `translate(${contextMenuX}px, ${contextMenuY}px)`,
       }}
     >
-      <button
-        className={selectedUrl == "" ? styles.disabled : ""}
+      {/* TODO: disable paste button if clipboard doesn't contain image. May require aforementioned clipboard permission request. */}
+      <ContextMenuButton label="Paste" disabled={false} onClick={handlePaste} />
+      <ContextMenuButton
+        label="Delete"
+        disabled={!selectedUrl}
         onClick={handleDelete}
-      >
-        Delete
-      </button>
-      <button onClick={handlePaste}>Paste</button>
+      />
     </div>
   );
 }

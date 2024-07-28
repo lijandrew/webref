@@ -1,0 +1,21 @@
+.ContextMenuButton {
+    display: block;
+    padding: 15px 20px;
+    color: white;
+    user-select: none;
+    background-color: black;
+    width: 100%;
+    background-repeat: no-repeat;
+    border: none;
+    overflow: hidden;
+    outline: none;
+}
+
+.ContextMenuButton:hover {
+    background-color: gray;
+}
+
+.disabled {
+    background-color: grey;
+    pointer-events: none;
+}
