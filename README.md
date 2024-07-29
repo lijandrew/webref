@@ -4,6 +4,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## to-do
 
+- [ ] drag 'n drop image upload (react dropzone? manual implementation?)
 - [ ] drag select
 - [x] context menu ui polish
 - [x] Selection handles
