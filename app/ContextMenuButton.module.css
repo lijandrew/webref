@@ -1,14 +1,15 @@
 .ContextMenuButton {
-    display: block;
-    padding: 15px 20px;
+    display: flex;
+    padding: 10px 20px;
     color: white;
     user-select: none;
     background-color: black;
-    width: 100%;
+    width: 200px;
     background-repeat: no-repeat;
     border: none;
     overflow: hidden;
     outline: none;
+    justify-content: space-between;
 }
 
 .ContextMenuButton:hover {
@@ -16,6 +17,10 @@
 }
 
 .disabled {
-    background-color: grey;
+    color: grey;
     pointer-events: none;
+}
+
+.shortcut {
+    color: grey;
 }

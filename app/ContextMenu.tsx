@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useStore from "./useStore";
 import styles from "./ContextMenu.module.css";
 import ContextMenuButton from "./ContextMenuButton";
@@ -12,6 +12,7 @@ export default function ContextMenu() {
   const contextMenuY = useStore((state) => state.contextMenuY);
   const contextMenuShown = useStore((state) => state.contextMenuShown);
   const hideContextMenu = useStore((state) => state.hideContextMenu);
+  const [isMac, setIsMac] = useState(false);
 
   const handleDelete = useCallback(() => {
     // useCallback caches function so it won't be recreated each render. Needed for useEffect.
@@ -49,6 +50,9 @@ export default function ContextMenu() {
   }
 
   useEffect(() => {
+    if (navigator.userAgent.includes("Mac")) {
+      setIsMac(true);
+    }
     document.onpaste = handlePaste;
     document.onkeydown = (e) => {
       if (e.key === "Delete" || e.key === "Backspace") {
@@ -70,12 +74,18 @@ export default function ContextMenu() {
         transform: `translate(${contextMenuX}px, ${contextMenuY}px)`,
       }}
     >
-      {/* TODO: disable paste button if clipboard doesn't contain image. May require aforementioned clipboard permission request. */}
-      <ContextMenuButton label="Paste" disabled={false} onClick={handlePaste} />
       <ContextMenuButton
         label="Delete"
+        shortcut="Del"
         disabled={!selectedUrl}
         onClick={handleDelete}
+      />
+      {/* TODO: disable paste button if clipboard doesn't contain image. May require aforementioned clipboard permission request. */}
+      <ContextMenuButton
+        label="Paste"
+        shortcut={isMac ? "⌘V" : "^V"}
+        disabled={false}
+        onClick={handlePaste}
       />
     </div>
   );

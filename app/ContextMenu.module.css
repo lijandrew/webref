@@ -6,4 +6,5 @@
     flex-wrap: wrap;
     flex-direction: column;
     background-color: black;
+    padding: 5px 0;
 }
