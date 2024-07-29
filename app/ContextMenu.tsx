@@ -81,7 +81,7 @@ export default function ContextMenu() {
         disabled={!selectedUrl}
         onClick={handleDelete}
       />
-      {/* TODO: disable paste button if clipboard doesn't contain image. May require aforementioned clipboard permission request. */}
+      {/* Chrome will ask and save clipboard permission, but Firefox and Safari will prompt each time. */}
       <ContextMenuButton
         label="Paste"
         shortcut={isMac ? "⌘V" : "^V"}
