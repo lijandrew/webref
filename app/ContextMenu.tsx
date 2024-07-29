@@ -38,7 +38,8 @@ export default function ContextMenu() {
     } catch (err: unknown) {
       console.error(err);
     }
-  }, [addRef]);
+    hideContextMenu();
+  }, [addRef, hideContextMenu]);
 
   // TODO: We should request clipboard access instead of having the user click Paste twice.
   // Potential solution: https://web.dev/async-clipboard/#security_and_permissions
