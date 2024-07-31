@@ -1,10 +1,13 @@
 // I feel like could easily be turned into a easy "fullscreen dropzone" niche npm package.
 import React, { useState, useEffect } from "react";
 import useRefStore from "@/stores/useRefStore";
+import useSelectionStore from "@/stores/useSelectionStore";
 import styles from "./Drop.module.css";
 
 export default function Drop() {
   const addRef = useRefStore((state) => state.addRef);
+  const clearSelection = useSelectionStore((state) => state.clearSelection);
+  const selectUrl = useSelectionStore((state) => state.selectUrl);
   const [show, setShow] = useState(false);
   useEffect(() => {
     function handleDragStart(e: DragEvent) {
@@ -32,6 +35,7 @@ export default function Drop() {
     // Handle files dropped in window.
     function handleDrop(e: DragEvent) {
       e.preventDefault(); // Prevent browser from opening file.
+      clearSelection();
       if (!e.dataTransfer) return;
       // I think e.dataTransfer.files is more reliable than e.dataTransfer.items.
       for (const file of Array.from(e.dataTransfer.files)) {
@@ -39,6 +43,7 @@ export default function Drop() {
           console.log("Dropping file", file);
           const url = URL.createObjectURL(file);
           addRef(url);
+          selectUrl(url);
         }
       }
       // Experimental: accept drag and drop image link from another browser window.
@@ -49,6 +54,7 @@ export default function Drop() {
         if (url.endsWith(ext)) {
           console.log("Dropping URL", url);
           addRef(url);
+          selectUrl(url);
           break;
         }
       }

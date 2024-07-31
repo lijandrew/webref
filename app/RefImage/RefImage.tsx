@@ -11,8 +11,10 @@ type Props = {
 
 export default function RefImage({ url }: Props) {
   const setRef = useRefStore((state) => state.setRef);
-  const selectedUrl = useSelectionStore((state) => state.selectedUrl);
-  const setSelectedUrl = useSelectionStore((state) => state.setSelectedUrl);
+  const selectedUrls = useSelectionStore((state) => state.selectedUrls);
+  const selectUrl = useSelectionStore((state) => state.selectUrl);
+  const unselectUrl = useSelectionStore((state) => state.unselectUrl);
+  const clearSelection = useSelectionStore((state) => state.clearSelection);
   const contextMenuShown = useContextMenuStore(
     (state) => state.contextMenuShown,
   );
@@ -43,11 +45,20 @@ export default function RefImage({ url }: Props) {
     });
   }
 
-  // Clear selection and hide context menu when clicking on RefImagek
-  function handleMouseDown(e: MouseEvent) {
+  // Modify selection and hide context menu when clicking on RefImage
+  function handleClick(e: MouseEvent) {
     e.stopPropagation(); // Prevent dragging from propagating to Canvas
-    if (selectedUrl !== url) {
-      setSelectedUrl(url);
+    if (e.shiftKey) {
+      // Toggle selection if shift held
+      if (selectedUrls.has(url)) {
+        unselectUrl(url);
+      } else {
+        selectUrl(url);
+      }
+    } else {
+      // Select only this if shift not held
+      clearSelection();
+      selectUrl(url);
     }
     if (contextMenuShown) {
       hideContextMenu();
@@ -79,7 +90,7 @@ export default function RefImage({ url }: Props) {
       lockAspectRatio={true}
       onDragStop={syncRef}
       onResizeStop={syncRef}
-      onMouseDown={handleMouseDown}
+      onClick={handleClick}
       onContextMenu={handleContextMenu}
       default={{
         x: refData.x,
@@ -95,10 +106,10 @@ export default function RefImage({ url }: Props) {
           onLoad={handleImgLoad}
           draggable="false"
           src={url}
-          className={`${styles.innerImg} ${selectedUrl == url ? styles.selected : ""}`}
+          className={`${styles.innerImg} ${selectedUrls.has(url) ? styles.selected : ""}`}
           alt=""
         />
-        {selectedUrl == url && (
+        {selectedUrls.has(url) && (
           <React.Fragment>
             <div className={`${styles.handle} ${styles.handle1}`} />
             <div className={`${styles.handle} ${styles.handle2}`} />

@@ -4,7 +4,9 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## to-do
 
+- [ ] Centralize utilities into a lib? For example, all file/upload related utilities into one neat function, etc.
 - [ ] arrange images optimally
+- [ ] shift click select
 - [ ] drag select
     - [ ] detect drag start and drag end on canvas, on drag move update selection box. will this work in FF?
     - [ ] loop through all RefImages and test if intersects selection box using x/y/width/height 
@@ -14,6 +16,10 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 - [ ] save useRefStore state in browser storage using `zustand` persist
     - Map serializing can be handled with superjson, but what about storing the blobs? IndexedDB looks like the solution, but it seems complicated.
 - [ ] pan and zoom canvas
+    - what if used middle click/scroll to control css transform modifiers on Canvas?
+    - idk how we'd do infinite canvas, but we'd at least give the ability to zoom and pan around
+    - maybe we can just make the canvas really big. Like make the pixel dimensions huge. 
+    - I don't think we can modify Canvas size on the fly because Rnd uses it to measure offset
 
 ## for kluo
 

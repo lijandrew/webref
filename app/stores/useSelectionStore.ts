@@ -1,15 +1,33 @@
 import { create } from "zustand";
 
 type SelectionState = {
-  selectedUrl: string;
-  setSelectedUrl: (url: string) => void;
+  selectedUrls: Set<string>;
+  selectUrl: (url: string) => void; // Better name? addSelection? Does that miss the url part?
+  unselectUrl: (url: string) => void;
+  clearSelection: () => void;
 };
 
 const useSelectionStore = create<SelectionState>()((set) => ({
-  selectedUrl: "",
-  setSelectedUrl: (url: string) => {
-    console.log("setSelectedUrl", url);
-    set({ selectedUrl: url });
+  selectedUrls: new Set(),
+  selectUrl: (url: string) => {
+    console.log("Selecting", url);
+    set((state) => {
+      const newSelectedUrls = new Set(state.selectedUrls);
+      newSelectedUrls.add(url);
+      return { selectedUrls: newSelectedUrls };
+    });
+  },
+  unselectUrl: (url: string) => {
+    console.log("Unselecting", url);
+    set((state) => {
+      const newSelectedUrls = new Set(state.selectedUrls);
+      newSelectedUrls.delete(url);
+      return { selectedUrls: newSelectedUrls };
+    });
+  },
+  clearSelection: () => {
+    console.log("Clearing selection");
+    set({ selectedUrls: new Set() });
   },
 }));
 

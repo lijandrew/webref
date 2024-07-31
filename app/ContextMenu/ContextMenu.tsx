@@ -8,8 +8,9 @@ import styles from "./ContextMenu.module.css";
 export default function ContextMenu() {
   const addRef = useRefStore((state) => state.addRef);
   const delRef = useRefStore((state) => state.delRef);
-  const selectedUrl = useSelectionStore((state) => state.selectedUrl);
-  const setSelectedUrl = useSelectionStore((state) => state.setSelectedUrl);
+  const selectedUrls = useSelectionStore((state) => state.selectedUrls);
+  const selectUrl = useSelectionStore((state) => state.selectUrl);
+  const clearSelection = useSelectionStore((state) => state.clearSelection);
   const contextMenuX = useContextMenuStore((state) => state.contextMenuX);
   const contextMenuY = useContextMenuStore((state) => state.contextMenuY);
   const contextMenuShown = useContextMenuStore(
@@ -19,15 +20,22 @@ export default function ContextMenu() {
   const [isMac, setIsMac] = useState(false);
 
   // useCallback caches function so it won't be recreated each render. Needed for useEffect.
+  // Handle deleting images.
   const handleDelete = useCallback(() => {
-    if (!selectedUrl) return;
-    delRef(selectedUrl);
-    setSelectedUrl("");
+    if (selectedUrls.size == 0) {
+      return;
+    }
+    for (const url of Array.from(selectedUrls)) {
+      delRef(url);
+    }
+    clearSelection();
     hideContextMenu();
-  }, [delRef, selectedUrl, setSelectedUrl, hideContextMenu]);
+  }, [delRef, hideContextMenu, clearSelection, selectedUrls]);
 
+  // Handle pasting images from clipboard.
   const handlePaste = useCallback(async () => {
     try {
+      clearSelection(); // Clear selection before pasting because we want to select the new ones.
       const clipboardItems = await navigator.clipboard.read();
       for (const clipboardItem of clipboardItems) {
         const imageTypes = clipboardItem.types.filter((type) =>
@@ -37,14 +45,17 @@ export default function ContextMenu() {
           const blob = await clipboardItem.getType(imageType);
           const url = URL.createObjectURL(blob);
           console.log("Pasting image", url, blob);
-          addRef(url);
+          addRef(url); // Add image to canvas.
+          selectUrl(url); // Add image to selection.
         }
       }
     } catch (err: unknown) {
       console.error(err); // Catches error when user denies clipboard access.
     }
-    hideContextMenu();
-  }, [addRef, hideContextMenu]);
+    if (contextMenuShown) {
+      hideContextMenu();
+    }
+  }, [contextMenuShown, clearSelection, addRef, selectUrl, hideContextMenu]);
 
   // Block right-click on context menu and treat as left-click. Doesn't work in Safari.
   function handleContextMenu(e: React.MouseEvent) {
@@ -86,7 +97,7 @@ export default function ContextMenu() {
       <ContextMenuButton
         label="Delete"
         shortcut="Del"
-        disabled={!selectedUrl}
+        disabled={selectedUrls.size == 0}
         onClick={handleDelete}
       />
       {/* Chrome will ask and save clipboard permission, but Firefox and Safari will prompt each time. */}
