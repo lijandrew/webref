@@ -1,6 +1,7 @@
 import React from "react";
 import useStore from "./useStore";
 import styles from "./Canvas.module.css";
+import RefImage from "./RefImage";
 
 export default function Canvas() {
   const refMap = useStore((state) => state.refMap);
@@ -26,7 +27,9 @@ export default function Canvas() {
       onMouseDown={handleMouseDown}
       onContextMenu={handleContextMenu}
     >
-      {Array.from(refMap.values())}
+      {Array.from(refMap.keys()).map((url) => (
+        <RefImage key={url} url={url} />
+      ))}
     </div>
   );
 }

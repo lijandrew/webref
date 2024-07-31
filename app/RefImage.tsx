@@ -5,73 +5,76 @@ import useStore from "./useStore";
 
 type Props = {
   url: string;
-  defaultX: number;
-  defaultY: number;
-  defaultWidth: number | string;
 };
 
-export default function RefImage({
-  url,
-  defaultX,
-  defaultY,
-  defaultWidth,
-}: Props) {
+export default function RefImage({ url }: Props) {
   const selectedUrl = useStore((state) => state.selectedUrl);
   const setSelectedUrl = useStore((state) => state.setSelectedUrl);
   const showContextMenu = useStore((state) => state.showContextMenu);
   const hideContextMenu = useStore((state) => state.hideContextMenu);
-
+  const setRef = useStore((state) => state.setRef);
   const rnd = useRef<Rnd | null>(null);
-  const x = useRef(0);
-  const y = useRef(0);
-  const width = useRef(0);
+  const img = useRef<HTMLImageElement | null>(null);
+  const refData = useStore((state) => state.refMap.get(url));
 
-  function handleDragStop() {
-    // Surface position from Rnd
-    if (!rnd.current) return;
-    const coord = rnd.current.getDraggablePosition();
-    x.current = coord.x;
-    y.current = coord.y;
-  }
-
-  function handleResizeStop() {
-    // Surface width from Rnd (height not needed b/c lockAspectRatio)
-    if (!rnd.current) return;
-    width.current = Number(rnd.current.resizable.state.width);
+  // Sync the position and size of the image with the store
+  function syncRef() {
+    if (!rnd.current || !refData) return;
+    const { x, y } = rnd.current.getDraggablePosition();
+    const { width, height } = rnd.current.resizable.size;
+    setRef(url, {
+      x,
+      y,
+      width,
+      height,
+    });
   }
 
   function handleMouseDown(e: MouseEvent) {
-    e.stopPropagation(); // Prevent dragging from propagating to <Canvas />
+    e.stopPropagation(); // Prevent dragging from propagating to Canvas
     hideContextMenu();
     setSelectedUrl(url);
   }
 
   function handleContextMenu(e: MouseEvent) {
-    // Show context menu when right-clicking on the image
-    // TODO: Show different options than the canvas context menu
+    // Aka handle right-click
+    // TODO: Show different options than the canvas context menu (e.g. only show delete when right-clicking on an image)
     e.preventDefault();
     e.stopPropagation();
     showContextMenu(e.clientX, e.clientY);
   }
 
+  // Update component and store's RefData on image load to overwrite "auto" height with numerical height
+  function handleImgLoad() {
+    if (!img.current || !rnd.current || !refData) return;
+    rnd.current.updateSize({
+      width: img.current.width,
+      height: img.current.height,
+    });
+    syncRef();
+  }
+
+  if (!refData) return null;
   return (
     <Rnd
       ref={rnd}
       lockAspectRatio={true}
-      onDragStop={handleDragStop}
-      onResizeStop={handleResizeStop}
+      onDragStop={syncRef}
+      onResizeStop={syncRef}
       onMouseDown={handleMouseDown}
       onContextMenu={handleContextMenu}
       default={{
-        x: defaultX,
-        y: defaultY,
-        width: defaultWidth,
-        height: "auto",
+        x: refData.x,
+        y: refData.y,
+        width: refData.width,
+        height: refData.height,
       }}
     >
       <div className={styles.RefImage}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
+          ref={img}
+          onLoad={handleImgLoad}
           draggable="false"
           src={url}
           className={`${styles.innerImg} ${selectedUrl == url ? styles.selected : ""}`}
