@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import useRefStore from "@/stores/useRefStore";
 import useSelectionStore from "@/stores/useSelectionStore";
 import useContextMenuStore from "@/stores/useContextMenuStore";
+import ContextMenuButton from "@/ContextMenuButton/ContextMenuButton";
 import styles from "./ContextMenu.module.css";
-import ContextMenuButton from "./ContextMenuButton";
 
 export default function ContextMenu() {
   const addRef = useRefStore((state) => state.addRef);

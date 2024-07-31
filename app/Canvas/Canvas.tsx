@@ -2,9 +2,8 @@ import React from "react";
 import useRefStore from "@/stores/useRefStore";
 import useContextMenuStore from "@/stores/useContextMenuStore";
 import useSelectionStore from "@/stores/useSelectionStore";
-
+import RefImage from "@/RefImage/RefImage";
 import styles from "./Canvas.module.css";
-import RefImage from "./RefImage";
 
 export default function Canvas() {
   const refMap = useRefStore((state) => state.refMap);

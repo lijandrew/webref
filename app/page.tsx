@@ -1,10 +1,10 @@
 "use client";
 
-import Canvas from "./Canvas";
-import UploadButton from "./UploadButton";
-import ContextMenu from "./ContextMenu";
-import Debug from "./Debug";
-import Drop from "./Drop";
+import Canvas from "@/Canvas/Canvas";
+import UploadButton from "@/UploadButton/UploadButton";
+import ContextMenu from "@/ContextMenu/ContextMenu";
+import Drop from "@/Drop/Drop";
+import Debug from "@/Debug/Debug";
 
 export default function Home() {
   return (
