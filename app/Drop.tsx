@@ -1,10 +1,10 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import useStore from "./useStore";
+import useRefStore from "@/stores/useRefStore";
 import styles from "./Drop.module.css";
 
 export default function Drop() {
-  const addRef = useStore((state) => state.addRef);
+  const addRef = useRefStore((state) => state.addRef);
   const [show, setShow] = useState(false);
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -40,7 +40,7 @@ export default function Drop() {
       {isDragActive ? (
         <p>Drop the files here ...</p>
       ) : (
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p>Drag n drop some files here, or click to select files</p>
       )}
     </div>
   );

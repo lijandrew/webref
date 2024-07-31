@@ -1,17 +1,21 @@
 import React, { useCallback, useEffect, useState } from "react";
-import useStore from "./useStore";
+import useRefStore from "@/stores/useRefStore";
+import useSelectionStore from "@/stores/useSelectionStore";
+import useContextMenuStore from "@/stores/useContextMenuStore";
 import styles from "./ContextMenu.module.css";
 import ContextMenuButton from "./ContextMenuButton";
 
 export default function ContextMenu() {
-  const addRef = useStore((state) => state.addRef);
-  const delRef = useStore((state) => state.delRef);
-  const selectedUrl = useStore((state) => state.selectedUrl);
-  const setSelectedUrl = useStore((state) => state.setSelectedUrl);
-  const contextMenuX = useStore((state) => state.contextMenuX);
-  const contextMenuY = useStore((state) => state.contextMenuY);
-  const contextMenuShown = useStore((state) => state.contextMenuShown);
-  const hideContextMenu = useStore((state) => state.hideContextMenu);
+  const addRef = useRefStore((state) => state.addRef);
+  const delRef = useRefStore((state) => state.delRef);
+  const selectedUrl = useSelectionStore((state) => state.selectedUrl);
+  const setSelectedUrl = useSelectionStore((state) => state.setSelectedUrl);
+  const contextMenuX = useContextMenuStore((state) => state.contextMenuX);
+  const contextMenuY = useContextMenuStore((state) => state.contextMenuY);
+  const contextMenuShown = useContextMenuStore(
+    (state) => state.contextMenuShown,
+  );
+  const hideContextMenu = useContextMenuStore((state) => state.hideContextMenu);
   const [isMac, setIsMac] = useState(false);
 
   const handleDelete = useCallback(() => {
@@ -35,7 +39,7 @@ export default function ContextMenu() {
         }
       }
     } catch (err: unknown) {
-      console.error(err); // Do we actually need this?
+      console.error(err);
     }
     hideContextMenu();
   }, [addRef, hideContextMenu]);

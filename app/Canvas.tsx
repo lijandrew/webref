@@ -1,13 +1,16 @@
 import React from "react";
-import useStore from "./useStore";
+import useRefStore from "@/stores/useRefStore";
+import useContextMenuStore from "@/stores/useContextMenuStore";
+import useSelectionStore from "@/stores/useSelectionStore";
+
 import styles from "./Canvas.module.css";
 import RefImage from "./RefImage";
 
 export default function Canvas() {
-  const refMap = useStore((state) => state.refMap);
-  const setSelectedUrl = useStore((state) => state.setSelectedUrl);
-  const showContextMenu = useStore((state) => state.showContextMenu);
-  const hideContextMenu = useStore((state) => state.hideContextMenu);
+  const refMap = useRefStore((state) => state.refMap);
+  const setSelectedUrl = useSelectionStore((state) => state.setSelectedUrl);
+  const showContextMenu = useContextMenuStore((state) => state.showContextMenu);
+  const hideContextMenu = useContextMenuStore((state) => state.hideContextMenu);
 
   function handleMouseDown() {
     // Clear selection and hide context menu when clicking on the canvas

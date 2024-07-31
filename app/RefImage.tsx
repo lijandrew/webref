@@ -1,21 +1,23 @@
 import React, { useRef } from "react";
 import styles from "./RefImage.module.css";
 import { Rnd } from "react-rnd";
-import useStore from "./useStore";
+import useRefStore from "@/stores/useRefStore";
+import useSelectionStore from "@/stores/useSelectionStore";
+import useContextMenuStore from "@/stores/useContextMenuStore";
 
 type Props = {
   url: string;
 };
 
 export default function RefImage({ url }: Props) {
-  const selectedUrl = useStore((state) => state.selectedUrl);
-  const setSelectedUrl = useStore((state) => state.setSelectedUrl);
-  const showContextMenu = useStore((state) => state.showContextMenu);
-  const hideContextMenu = useStore((state) => state.hideContextMenu);
-  const setRef = useStore((state) => state.setRef);
+  const setRef = useRefStore((state) => state.setRef);
+  const selectedUrl = useSelectionStore((state) => state.selectedUrl);
+  const setSelectedUrl = useSelectionStore((state) => state.setSelectedUrl);
+  const showContextMenu = useContextMenuStore((state) => state.showContextMenu);
+  const hideContextMenu = useContextMenuStore((state) => state.hideContextMenu);
+  const refData = useRefStore((state) => state.refMap.get(url));
   const rnd = useRef<Rnd | null>(null);
   const img = useRef<HTMLImageElement | null>(null);
-  const refData = useStore((state) => state.refMap.get(url));
 
   // Sync the position and size of the image with the store
   function syncRef() {

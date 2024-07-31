@@ -1,9 +1,9 @@
 import React from "react";
-import useStore from "./useStore";
+import useRefStore from "@/stores/useRefStore";
 import styles from "./UploadButton.module.css";
 
 export default function UploadButton() {
-  const addRef = useStore((state) => state.addRef);
+  const addRef = useRefStore((state) => state.addRef);
 
   // Creates new RefImages, assumes no previously saved position or width.
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
