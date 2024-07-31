@@ -4,15 +4,15 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## to-do
 
+- [ ] arrange images optimally
 - [ ] drag select
     - [ ] detect drag start and drag end on canvas, on drag move update selection box. will this work in FF?
     - [ ] loop through all RefImages and test if intersects selection box using x/y/width/height 
     - [ ] mass delete, just loop through urls
     - [ ] mass move and resize, move selected Rnds into transparent wrapper Rnd?
-- [ ] drag 'n drop image upload (react dropzone? manual implementation?)
-- [ ] auto-save to IndexedDB - could I just save the entire refMap???
-- [ ] arrange images optimally
 - [ ] undo/redo - keep stack of "Action" objects - undo function takes in Action and undoes it based on Action type using Action data
+- [ ] save useRefStore state in browser storage using `zustand` persist
+    - Map serializing can be handled with superjson, but what about storing the blobs? IndexedDB looks like the solution, but it seems complicated.
 - [ ] pan and zoom canvas
 
 ## for kluo
@@ -30,6 +30,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## done
 
+- [x] drag 'n drop image upload using `react-dropzone`
 - [x] fix RefImage having un-updated height before interaction by calculating and updating height in img.onload
 - [x] add debug tools
 - [x] RefImages now update/sync position and size with store's refMap, surfacing those values for zip export

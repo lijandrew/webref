@@ -9,7 +9,7 @@ type RefData = {
   // but we will likely need it to calculate intersections for drag multi-selections.
 };
 
-type RefStoreState = {
+type RefState = {
   // Keep track of reference images by mapping URL to RefData (x, y, width, height)
   // The reference image components are created based on this map.
   // After every drag and resize operation, the reference image component will update the store to keep the map in sync.
@@ -20,7 +20,8 @@ type RefStoreState = {
   setRef: (url: string, data: RefData) => void; // Used by reference image components to update/sync the store
 };
 
-const useRefStore = create<RefStoreState>((set) => ({
+// Zustand with Typescript requires curried create. Notice create<T>() instead of create<T>.
+const useRefStore = create<RefState>()((set) => ({
   refMap: new Map(),
   addRef: (url: string) => {
     set((state) => {

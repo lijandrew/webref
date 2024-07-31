@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type ContextMenuStoreState = {
+type ContextMenuState = {
   contextMenuX: number;
   contextMenuY: number;
   contextMenuShown: boolean;
@@ -8,7 +8,7 @@ type ContextMenuStoreState = {
   showContextMenu: (x: number, y: number) => void;
 };
 
-const useContextMenuStore = create<ContextMenuStoreState>((set) => ({
+const useContextMenuStore = create<ContextMenuState>()((set) => ({
   contextMenuX: 0,
   contextMenuY: 0,
   contextMenuShown: false,

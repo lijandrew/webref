@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-type SelectionStoreState = {
+type SelectionState = {
   selectedUrl: string;
   setSelectedUrl: (url: string) => void;
 };
 
-const useSelectionStore = create<SelectionStoreState>((set) => ({
+const useSelectionStore = create<SelectionState>()((set) => ({
   selectedUrl: "",
   setSelectedUrl: (url: string) => set({ selectedUrl: url }),
 }));
