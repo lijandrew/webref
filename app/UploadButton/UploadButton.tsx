@@ -9,6 +9,7 @@ export default function UploadButton() {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const files = Array.from(e.target.files || []);
     for (const file of files) {
+      console.log("Uploading file", file);
       const url = URL.createObjectURL(file); // Create URL referencing file
       addRef(url);
     }

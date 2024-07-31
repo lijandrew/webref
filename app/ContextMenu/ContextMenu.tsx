@@ -18,8 +18,9 @@ export default function ContextMenu() {
   const hideContextMenu = useContextMenuStore((state) => state.hideContextMenu);
   const [isMac, setIsMac] = useState(false);
 
+  // useCallback caches function so it won't be recreated each render. Needed for useEffect.
   const handleDelete = useCallback(() => {
-    // useCallback caches function so it won't be recreated each render. Needed for useEffect.
+    if (!selectedUrl) return;
     delRef(selectedUrl);
     setSelectedUrl("");
     hideContextMenu();
@@ -39,13 +40,13 @@ export default function ContextMenu() {
         }
       }
     } catch (err: unknown) {
-      console.error(err);
+      console.error(err); // Catches error when user denies clipboard access.
     }
     hideContextMenu();
   }, [addRef, hideContextMenu]);
 
+  // Block right-click on context menu and treat as left-click. Doesn't work in Safari.
   function handleContextMenu(e: React.MouseEvent) {
-    // Block right-click on context menu and treat as left-click. Doesn't work in Safari.
     e.preventDefault();
     e.stopPropagation();
     (e.target as HTMLButtonElement).click();
@@ -58,7 +59,7 @@ export default function ContextMenu() {
     }
     // Handle keyboard shortcuts.
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") {
+      if (e.key === "Escape" && contextMenuShown) {
         hideContextMenu();
       } else if (e.key === "Delete" || e.key == "Backspace") {
         handleDelete();
@@ -70,7 +71,7 @@ export default function ContextMenu() {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("paste", handlePaste);
     };
-  }, [handleDelete, handlePaste, hideContextMenu]);
+  }, [contextMenuShown, handleDelete, handlePaste, hideContextMenu]);
 
   return (
     <div

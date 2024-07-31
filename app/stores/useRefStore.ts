@@ -25,6 +25,7 @@ const useRefStore = create<RefState>()((set) => ({
   refMap: new Map(),
   addRef: (url: string) => {
     set((state) => {
+      console.log("addRef", url);
       const newRefMap = new Map(state.refMap);
       newRefMap.set(url, {
         x: 0,
@@ -36,6 +37,7 @@ const useRefStore = create<RefState>()((set) => ({
     });
   },
   delRef: (url: string) => {
+    console.log("delRef", url);
     set((state) => {
       const newRefMap = new Map(state.refMap);
       newRefMap.delete(url);
@@ -44,6 +46,7 @@ const useRefStore = create<RefState>()((set) => ({
     });
   },
   setRef: (url: string, data: RefData) => {
+    console.log("setRef", url, data);
     set((state) => {
       const newRefMap = new Map(state.refMap);
       newRefMap.set(url, data);

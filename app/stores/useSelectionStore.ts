@@ -7,7 +7,10 @@ type SelectionState = {
 
 const useSelectionStore = create<SelectionState>()((set) => ({
   selectedUrl: "",
-  setSelectedUrl: (url: string) => set({ selectedUrl: url }),
+  setSelectedUrl: (url: string) => {
+    console.log("setSelectedUrl", url);
+    set({ selectedUrl: url });
+  },
 }));
 
 export default useSelectionStore;

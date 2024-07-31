@@ -13,6 +13,9 @@ export default function RefImage({ url }: Props) {
   const setRef = useRefStore((state) => state.setRef);
   const selectedUrl = useSelectionStore((state) => state.selectedUrl);
   const setSelectedUrl = useSelectionStore((state) => state.setSelectedUrl);
+  const contextMenuShown = useContextMenuStore(
+    (state) => state.contextMenuShown,
+  );
   const showContextMenu = useContextMenuStore((state) => state.showContextMenu);
   const hideContextMenu = useContextMenuStore((state) => state.hideContextMenu);
   const refData = useRefStore((state) => state.refMap.get(url));
@@ -24,6 +27,14 @@ export default function RefImage({ url }: Props) {
     if (!rnd.current || !refData) return;
     const { x, y } = rnd.current.getDraggablePosition();
     const { width, height } = rnd.current.resizable.size;
+    // Only update store if there are changes
+    if (
+      refData.x === x &&
+      refData.y === y &&
+      refData.width === width &&
+      refData.height === height
+    )
+      return;
     setRef(url, {
       x,
       y,
@@ -32,10 +43,15 @@ export default function RefImage({ url }: Props) {
     });
   }
 
+  // Clear selection and hide context menu when clicking on RefImagek
   function handleMouseDown(e: MouseEvent) {
     e.stopPropagation(); // Prevent dragging from propagating to Canvas
-    hideContextMenu();
-    setSelectedUrl(url);
+    if (selectedUrl !== url) {
+      setSelectedUrl(url);
+    }
+    if (contextMenuShown) {
+      hideContextMenu();
+    }
   }
 
   function handleContextMenu(e: MouseEvent) {

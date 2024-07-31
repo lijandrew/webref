@@ -7,18 +7,26 @@ import styles from "./Canvas.module.css";
 
 export default function Canvas() {
   const refMap = useRefStore((state) => state.refMap);
+  const selectedUrl = useSelectionStore((state) => state.selectedUrl);
   const setSelectedUrl = useSelectionStore((state) => state.setSelectedUrl);
+  const contextMenuShown = useContextMenuStore(
+    (state) => state.contextMenuShown,
+  );
   const showContextMenu = useContextMenuStore((state) => state.showContextMenu);
   const hideContextMenu = useContextMenuStore((state) => state.hideContextMenu);
 
+  // Clear selection and hide context menu when clicking on the canvas
   function handleMouseDown() {
-    // Clear selection and hide context menu when clicking on the canvas
-    setSelectedUrl("");
-    hideContextMenu();
+    if (selectedUrl) {
+      setSelectedUrl("");
+    }
+    if (contextMenuShown) {
+      hideContextMenu();
+    }
   }
 
+  // Show context menu when right-clicking on the canvas
   function handleContextMenu(e: React.MouseEvent) {
-    // Show context menu when right-clicking on the canvas
     e.preventDefault();
     showContextMenu(e.clientX, e.clientY);
   }

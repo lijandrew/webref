@@ -36,6 +36,7 @@ export default function Drop() {
       // I think e.dataTransfer.files is more reliable than e.dataTransfer.items.
       for (const file of Array.from(e.dataTransfer.files)) {
         if (file.type.startsWith("image/")) {
+          console.log("Dropping file", file);
           const url = URL.createObjectURL(file);
           addRef(url);
         }
@@ -46,6 +47,7 @@ export default function Drop() {
       const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
       for (const ext of imageExtensions) {
         if (url.endsWith(ext)) {
+          console.log("Dropping URL", url);
           addRef(url);
           break;
         }
