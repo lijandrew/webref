@@ -4,6 +4,7 @@ import Canvas from "./Canvas";
 import UploadButton from "./UploadButton";
 import ContextMenu from "./ContextMenu";
 import Debug from "./Debug";
+import Drop from "./Drop";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       <Canvas />
       <UploadButton />
       <ContextMenu />
+      <Drop />
       <Debug />
     </main>
   );

@@ -22,7 +22,6 @@ export default function ContextMenu() {
   }, [delRef, selectedUrl, setSelectedUrl, hideContextMenu]);
 
   const handlePaste = useCallback(async () => {
-    // useCallback caches function so it won't be recreated each render. Needed for useEffect.
     try {
       const clipboardItems = await navigator.clipboard.read();
       for (const clipboardItem of clipboardItems) {
@@ -36,35 +35,38 @@ export default function ContextMenu() {
         }
       }
     } catch (err: unknown) {
-      console.error(err);
+      console.error(err); // Do we actually need this?
     }
     hideContextMenu();
   }, [addRef, hideContextMenu]);
 
-  // TODO: We should request clipboard access instead of having the user click Paste twice.
-  // Potential solution: https://web.dev/async-clipboard/#security_and_permissions
   function handleContextMenu(e: React.MouseEvent) {
-    // Prevent right-click default behavior on the context menu
+    // Block right-click on context menu and treat as left-click. Doesn't work in Safari.
     e.preventDefault();
     e.stopPropagation();
-    (e.target as HTMLButtonElement).click(); // Doesn't work in Safari
+    (e.target as HTMLButtonElement).click();
   }
 
   useEffect(() => {
+    // Detect if user is on Mac to display correct shortcuts.
     if (navigator.userAgent.includes("Mac")) {
       setIsMac(true);
     }
-    document.onpaste = handlePaste;
-    document.onkeydown = (e) => {
-      if (e.key === "Delete" || e.key === "Backspace") {
+    // Handle keyboard shortcuts.
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        hideContextMenu();
+      } else if (e.key === "Delete" || e.key == "Backspace") {
         handleDelete();
       }
-    };
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("paste", handlePaste); // Paste event is not a keyboard event.
     return () => {
-      document.onpaste = null;
-      document.onkeydown = null;
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("paste", handlePaste);
     };
-  }, [handleDelete, handlePaste]);
+  }, [handleDelete, handlePaste, hideContextMenu]);
 
   return (
     <div
