@@ -30,7 +30,9 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## done
 
-- [x] drag 'n drop image upload using `react-dropzone`
+- [x] support for dragging in image links from other browser windows
+- [x] css animation for drop prompt when dragging over with file
+- [x] manual fullscreen drag n drop upload with fixes to allow for cancelling by dragging away
 - [x] fix RefImage having un-updated height before interaction by calculating and updating height in img.onload
 - [x] add debug tools
 - [x] RefImages now update/sync position and size with store's refMap, surfacing those values for zip export
