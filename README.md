@@ -4,14 +4,13 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## to-do
 
-- [ ] Centralize utilities into a lib? For example, all file/upload related utilities into one neat function, etc.
 - [ ] multi select manipulation - delete and re-add into temporary Rnd? temoprary Rnd DOES NOT WORK. 
-- [x] shift click select
 - [ ] drag select
     - [ ] detect drag start and drag end on canvas, on drag move update selection box. will this work in FF?
     - [ ] loop through all RefImages and test if intersects selection box using x/y/width/height 
     - [ ] mass delete, just loop through urls
     - [ ] mass move and resize, move selected Rnds into transparent wrapper Rnd?
+- [ ] Centralize utilities into a lib? For example, all file/upload related utilities into one neat function, etc.
 - [ ] arrange images optimally
 - [ ] undo/redo - keep stack of "Action" objects - undo function takes in Action and undoes it based on Action type using Action data
 - [ ] save useRefStore state in browser storage using `zustand` persist
@@ -37,6 +36,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## done
 
+- [x] shift click select
 - [x] support for dragging in image links from other browser windows
 - [x] css animation for drop prompt when dragging over with file
 - [x] manual fullscreen drag n drop upload with fixes to allow for cancelling by dragging away
