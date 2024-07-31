@@ -16,6 +16,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 - [ ] pan and zoom canvas
 
 ## for kluo
+
 - [ ] export into zip (image files + JSON describing x,y,width,height)
     - We use the React.js Javascript library with the Next.js React Framework
     - https://react.dev/ - React.js tutorial
@@ -24,6 +25,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
         1. Make a ExportButton.tsx component (refer to UploadButton.tsx)
         2. Use the `useStore` global state management hook to access refMap
         3. Loop through the values of refMap, which have now been updated to contain all the data you need (x, y, width, height)
+        4. I added JSZip to the project. https://stuk.github.io/jszip/ You can use this to zip the files.
 - [ ] import from archive
 
 ## done

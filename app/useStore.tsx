@@ -5,13 +5,13 @@ type RefData = {
   y: number;
   width: number;
   height: number | string;
-  // We don't actually need height for image creation since aspect ratio is locked,
+  // We don't actually need numerical height for image creation since aspect ratio is locked,
   // but we will likely need it to calculate intersections for drag multi-selections.
 };
 
 type State = {
   // Reference image management
-  // Keep track of reference images by mapping URL to position and size.
+  // Keep track of reference images by mapping URL to RefData (x, y, width, height)
   // The reference image components are created based on this map.
   // After every drag and resize operation, the reference image component will update the store to keep the map in sync.
   // We need the map in sync to access the position and size of the reference images for exporting to zip.
