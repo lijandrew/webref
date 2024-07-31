@@ -14,7 +14,7 @@ export default function Canvas() {
   const showContextMenu = useContextMenuStore((state) => state.showContextMenu);
   const hideContextMenu = useContextMenuStore((state) => state.hideContextMenu);
 
-  // Handle clicking on the canvas
+  // Handle mousedown on the canvas (more configurable than click)
   function handleMouseDown(e: React.MouseEvent) {
     // Right mouse button is handled by context menu.
     if (e.button == 2) return;

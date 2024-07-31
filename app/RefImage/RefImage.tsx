@@ -47,6 +47,7 @@ export default function RefImage({ url }: Props) {
   }
 
   // Modify selection and hide context menu when clicking on RefImage
+  // Use mouseDown instead of click to prevent deselection when dragging multiple images (click is triggered after mouseUp after drag)
   function handleMouseDown(e: MouseEvent) {
     e.stopPropagation(); // Prevent mousedown from propagating to Canvas
     // Right mouse button is handled by context menu.
