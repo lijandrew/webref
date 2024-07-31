@@ -36,6 +36,7 @@ export default function ContextMenu() {
         for (const imageType of imageTypes) {
           const blob = await clipboardItem.getType(imageType);
           const url = URL.createObjectURL(blob);
+          console.log("Pasting image", url, blob);
           addRef(url);
         }
       }
