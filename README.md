@@ -4,7 +4,10 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## to-do
 
-- [ ] multi select manipulation - delete and re-add into temporary Rnd? temoprary Rnd DOES NOT WORK. 
+- [ ] multi select manipulation
+    - I don't think putting them in a temporary Rnd will work, or it will be extremely convoluted.
+    - On each RefImage, calculate the delta x/y and apply to all selected elements using `setRef(url)` on the urls in `selectedUrls`
+    - based on pureref behavior, drag happens when dragging an individual selected image, but resize only happens when resizing the entire bounding box. So what if we use the delta math from the previous bullet for the drag and for the resize we spawn an empty Rnd positioned (but not structurally) around the images. and then we listen to the events on the SelectionResizer to also scale up the selected elements in a loop. This can be done by setting all of their resizing anchor points to the same as the wrapping Rnd.
 - [ ] drag select
     - [ ] detect drag start and drag end on canvas, on drag move update selection box. will this work in FF?
     - [ ] loop through all RefImages and test if intersects selection box using x/y/width/height 

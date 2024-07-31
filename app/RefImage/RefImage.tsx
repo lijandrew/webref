@@ -4,6 +4,7 @@ import useRefStore from "@/stores/useRefStore";
 import useSelectionStore from "@/stores/useSelectionStore";
 import useContextMenuStore from "@/stores/useContextMenuStore";
 import styles from "./RefImage.module.css";
+import type { RndDragEvent } from "react-rnd";
 
 type Props = {
   url: string;
@@ -46,8 +47,10 @@ export default function RefImage({ url }: Props) {
   }
 
   // Modify selection and hide context menu when clicking on RefImage
-  function handleClick(e: MouseEvent) {
-    e.stopPropagation(); // Prevent dragging from propagating to Canvas
+  function handleMouseDown(e: MouseEvent) {
+    e.stopPropagation(); // Prevent mousedown from propagating to Canvas
+    // Right mouse button is handled by context menu.
+    if (e.button == 2) return;
     if (e.shiftKey) {
       // Toggle selection if shift held
       if (selectedUrls.has(url)) {
@@ -73,6 +76,18 @@ export default function RefImage({ url }: Props) {
     showContextMenu(e.clientX, e.clientY);
   }
 
+  function handleDrag(e: RndDragEvent) {
+    console.log("drag", e);
+  }
+
+  function handleDragStop(e: RndDragEvent) {
+    syncRef();
+  }
+
+  function handleResizeStop(e: MouseEvent | TouchEvent) {
+    syncRef();
+  }
+
   // Update component and store's RefData on image load to overwrite "auto" height with numerical height
   function handleImgLoad() {
     if (!img.current || !rnd.current || !refData) return;
@@ -88,9 +103,10 @@ export default function RefImage({ url }: Props) {
     <Rnd
       ref={rnd}
       lockAspectRatio={true}
-      onDragStop={syncRef}
-      onResizeStop={syncRef}
-      onClick={handleClick}
+      onDrag={handleDrag}
+      onDragStop={handleDragStop}
+      onResizeStop={handleResizeStop}
+      onMouseDown={handleMouseDown}
       onContextMenu={handleContextMenu}
       default={{
         x: refData.x,
@@ -106,10 +122,12 @@ export default function RefImage({ url }: Props) {
           onLoad={handleImgLoad}
           draggable="false"
           src={url}
+          // Show outline when selected...
           className={`${styles.innerImg} ${selectedUrls.has(url) ? styles.selected : ""}`}
           alt=""
         />
-        {selectedUrls.has(url) && (
+        {/* ...but show handles only when only image selected */}
+        {selectedUrls.has(url) && selectedUrls.size === 1 && (
           <React.Fragment>
             <div className={`${styles.handle} ${styles.handle1}`} />
             <div className={`${styles.handle} ${styles.handle2}`} />

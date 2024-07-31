@@ -15,7 +15,9 @@ export default function Canvas() {
   const hideContextMenu = useContextMenuStore((state) => state.hideContextMenu);
 
   // Handle clicking on the canvas
-  function handleClick(e: React.MouseEvent) {
+  function handleMouseDown(e: React.MouseEvent) {
+    // Right mouse button is handled by context menu.
+    if (e.button == 2) return;
     // Clear selection unless shift held
     if (!e.shiftKey) {
       clearSelection();
@@ -35,8 +37,7 @@ export default function Canvas() {
   return (
     <div
       className={styles.Canvas}
-      // onMouseDown={handleMouseDown}
-      onClick={handleClick}
+      onMouseDown={handleMouseDown}
       onContextMenu={handleContextMenu}
     >
       {Array.from(refMap.keys()).map((url) => (
