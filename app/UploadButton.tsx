@@ -21,7 +21,7 @@ export default function UploadButton() {
       onChange={handleChange}
       type="file"
       multiple
-      accept=".png,.jpg,.jpeg,.gif"
+      accept="image/*"
     />
   );
 }
