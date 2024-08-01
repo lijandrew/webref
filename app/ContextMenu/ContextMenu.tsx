@@ -6,6 +6,7 @@ import ContextMenuButton from "@/ContextMenuButton/ContextMenuButton";
 import styles from "./ContextMenu.module.css";
 
 export default function ContextMenu() {
+  const refMap = useRefStore((state) => state.refMap);
   const addRef = useRefStore((state) => state.addRef);
   const delRef = useRefStore((state) => state.delRef);
   const selectedUrls = useSelectionStore((state) => state.selectedUrls);
@@ -64,6 +65,12 @@ export default function ContextMenu() {
     (e.target as HTMLButtonElement).click();
   }
 
+  function handleSelectAll() {
+    for (const url of Array.from(refMap.keys())) {
+      selectUrl(url);
+    }
+  }
+
   useEffect(() => {
     // Detect if user is on Mac to display correct shortcuts.
     if (navigator.userAgent.includes("Mac")) {
@@ -106,6 +113,13 @@ export default function ContextMenu() {
         shortcut={isMac ? "⌘V" : "^V"}
         disabled={false}
         onClick={handlePaste}
+      />
+      {/* For some reason the select all doesn't make the Selection.tsx render the box */}
+      <ContextMenuButton
+        label="Select all"
+        shortcut={isMac ? "⌘A" : "^A"}
+        disabled={false}
+        onClick={handleSelectAll}
       />
     </div>
   );

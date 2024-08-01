@@ -1,4 +1,5 @@
 import React from "react";
+import useContextMenuStore from "@/stores/useContextMenuStore";
 import styles from "./ContextMenuButton.module.css";
 
 interface ContextMenuButtonProps {
@@ -14,10 +15,15 @@ function ContextMenuButton({
   disabled,
   onClick,
 }: ContextMenuButtonProps) {
+  const hideContextMenu = useContextMenuStore((state) => state.hideContextMenu);
+  function handleClick() {
+    onClick();
+    hideContextMenu();
+  }
   return (
     <button
       className={`${styles.ContextMenuButton} ${disabled ? styles.disabled : ""}`}
-      onClick={onClick}
+      onClick={handleClick}
     >
       <span>{label}</span>
       <span className={styles.shortcut}>{shortcut}</span>

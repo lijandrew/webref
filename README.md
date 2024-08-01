@@ -4,30 +4,19 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## to-do
 
-- [ ] clearly plan out the specific mouse event cases, considering shift and selection size
-- [ ] RefImages should be draggable but not resizable. The resizing should be controlled by a separate component that displays the handles around the selection. In other words, the user must select first before resizing but can move without first selecting. Would it be easier then to just manipulate around a single Selection component? And then just track if the images are selected or not and then manipulate the selected ones. So basically the only Rnd with actual controls will be the Selection. And all the images will be indirectly controlled through store updates. Otherwise, we end up treating dragging and resizing differently, handling dragging on the RefImage yet handling resizing on Selection.
-    - [ ] Make RefImage Rnd not directly manipulatable. Still use Rnd for them though, because Rnd abstracts away a lot of stuff. Taking them off Rnd into a custom Rnd could be a stretch goal.
-    - [ ] Make Selection Rnd the direct source of interaction. Basically you're dragging and resizing the *Selection*, and the selected images are playing catch up.
-- [ ] we need to differentiate between clicks and drags more clearly before multi manipulation will work. cursor store?
-- [ ] multi select manipulation
-    - I don't think putting them in a temporary Rnd will work, or it will be extremely convoluted.
-    - On each RefImage, calculate the delta x/y and apply to all selected elements using `setRef(url)` on the urls in `selectedUrls`
-    - based on pureref behavior, drag happens when dragging an individual selected image, but resize only happens when resizing the entire bounding box. So what if we use the delta math from the previous bullet for the drag and for the resize we spawn an empty Rnd positioned (but not structurally) around the images. and then we listen to the events on the SelectionResizer to also scale up the selected elements in a loop. This can be done by setting all of their resizing anchor points to the same as the wrapping Rnd.
 - [ ] drag select
     - [ ] detect drag start and drag end on canvas, on drag move update selection box. will this work in FF?
     - [ ] loop through all RefImages and test if intersects selection box using x/y/width/height 
-    - [ ] mass delete, just loop through urls
-    - [ ] mass move and resize, move selected Rnds into transparent wrapper Rnd?
+- [ ] selection resizing
 - [ ] Centralize utilities into a lib? For example, all file/upload related utilities into one neat function, etc.
 - [ ] arrange images optimally
 - [ ] undo/redo - keep stack of "Action" objects - undo function takes in Action and undoes it based on Action type using Action data
 - [ ] save useRefStore state in browser storage using `zustand` persist
     - Map serializing can be handled with superjson, but what about storing the blobs? IndexedDB looks like the solution, but it seems complicated.
 - [ ] pan and zoom canvas
-    - what if used middle click/scroll to control css transform modifiers on Canvas?
-    - idk how we'd do infinite canvas, but we'd at least give the ability to zoom and pan around
-    - maybe we can just make the canvas really big. Like make the pixel dimensions huge. 
-    - I don't think we can modify Canvas size on the fly because Rnd uses it to measure offset
+    - Use middle click/scroll to control css transform modifiers on Canvas?
+    - Idk how we would achieve infinite canvas, but we can at least give the ability to zoom and pan on a finite canvas
+    - We can't modify Canvas size because Rnd measures its parent
 
 ## for kluo
 
@@ -44,6 +33,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## done
 
+- [x] fine-tune mouse event logic
 - [x] shift click select
 - [x] support for dragging in image links from other browser windows
 - [x] css animation for drop prompt when dragging over with file

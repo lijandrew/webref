@@ -11,11 +11,11 @@ export default function Home() {
   return (
     <main>
       <Canvas />
-      <UploadButton />
-      <ContextMenu />
-      <Selection />
-      <Drop />
       <Debug />
+      <UploadButton />
+      <Selection />
+      <ContextMenu />
+      <Drop />
     </main>
   );
 }
