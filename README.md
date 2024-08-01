@@ -4,11 +4,12 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## to-do
 
+- [ ] CMD/CTRL + A select all keyboard shortcut
 - [ ] drag select
     - [ ] detect drag start and drag end on canvas, on drag move update selection box. will this work in FF?
     - [ ] loop through all RefImages and test if intersects selection box using x/y/width/height 
 - [ ] selection resizing
-- [ ] Centralize utilities into a lib? For example, all file/upload related utilities into one neat function, etc.
+- [ ] Big cleanup and refactor
 - [ ] arrange images optimally
 - [ ] undo/redo - keep stack of "Action" objects - undo function takes in Action and undoes it based on Action type using Action data
 - [ ] save useRefStore state in browser storage using `zustand` persist
@@ -33,6 +34,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## done
 
+- [x] select all button
 - [x] fine-tune mouse event logic
 - [x] shift click select
 - [x] support for dragging in image links from other browser windows
