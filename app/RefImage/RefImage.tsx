@@ -23,7 +23,7 @@ selection size > 1:
     - drag: move all selected images in locked axis
     - mouseUp after drag: nothing
 */
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { Rnd } from "react-rnd";
 import useRefStore from "@/stores/useRefStore";
 import useSelectionStore from "@/stores/useSelectionStore";
@@ -59,7 +59,7 @@ export default function RefImage({ url }: RefImageProps) {
     if (!rnd.current || !refData) return;
     const { x, y } = rnd.current.getDraggablePosition();
     const { width, height } = rnd.current.resizable.size;
-    // Only update store if there are changes
+    // Only update store if there are changes to prevent infinite loop
     if (
       refData.x === x &&
       refData.y === y &&
@@ -73,14 +73,6 @@ export default function RefImage({ url }: RefImageProps) {
       width,
       height,
     });
-  }
-
-  // Pull position and size from store. Needed when moved indirectly as part of a selection because the update comes from the store.
-  // Is there no way to just pass in the x/y value to the Rnd component (not the default prop, because that doesn't trigger rerender)
-  function syncFromStore() {
-    if (!rnd.current || !refData) return;
-    rnd.current.updatePosition({ x: refData.x, y: refData.y });
-    rnd.current.updateSize({ width: refData.width, height: refData.height });
   }
 
   // Modify selection and hide context menu when clicking on RefImage
@@ -151,7 +143,7 @@ export default function RefImage({ url }: RefImageProps) {
     syncToStore();
   }
 
-  // Update component and store's RefData on image load to overwrite "auto" height with numerical height
+  // Force component to calculate its numerical height (instead of "auto") and sync it up to the store
   function handleImgLoad() {
     if (!img.current || !rnd.current || !refData) return;
     rnd.current.updateSize({
@@ -161,14 +153,13 @@ export default function RefImage({ url }: RefImageProps) {
     syncToStore();
   }
 
-  // No dependencies because we want to pull from store after every render
-  // in case the image was moved indirectly as part of a selection.
-  useEffect(() => {
-    syncFromStore();
-  });
   if (!refData) return null;
   return (
     <Rnd
+      // Set position and size directly instead of default to re-render on store change
+      // (e.g. after indirect manipulation as part of a selection)
+      position={{ x: refData.x, y: refData.y }}
+      size={{ width: refData.width, height: refData.height }}
       ref={rnd}
       lockAspectRatio={true}
       onMouseDown={handleMouseDown}
@@ -176,12 +167,6 @@ export default function RefImage({ url }: RefImageProps) {
       onDragStop={handleDragStop}
       onResizeStop={handleResizeStop}
       onContextMenu={handleContextMenu}
-      default={{
-        x: refData.x,
-        y: refData.y,
-        width: refData.width,
-        height: refData.height,
-      }}
     >
       {/* onMouseUp not supported by react-rnd so putting it in the inner div */}
       <div onMouseUp={handleMouseUp} className={styles.RefImage}>
