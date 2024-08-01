@@ -1,28 +1,27 @@
 /*
-left mouse button logic
-selection size <= 1:
-  no shift:
-    - mouseDown: select image only
-    - mouseUp after click: nothing
-    - drag: move image
-    - mouseUp after drag: nothing
-  shift:
-    - mouseDown: nothing
-    - mouseUp after click: toggle select image
-    - drag: selection box
-    - mouseUp after drag: nothing / end selection box
-selection size > 1:
-  no shift:
-    - mouseDown: nothing
-    - mouseUp after click: select image Only
-    - drag: move all selected images
-    - mouseUp after drag: nothing
-  shift:
-    - mouseDown: nothing
-    - mouseUp after click: toggle select image
-    - drag: move all selected images in locked axis
-    - mouseUp after drag: nothing
+Left mouse button logic based on testing in PureRef.
+Specifically referring to when cursor is on a RefImage.
+
+mouseDown - "solo select if unselected"
+  with shift:
+    ignore
+  on unselected
+    solo select
+  on selected
+    nothing (don't interfere with drag)
+
+mouseUp after click - "shift toggle select, else solo select"
+  with shift
+    toggle select
+  on unselected
+    impossible bc mouseDown will first select it
+  on selected
+    solo select
+
+mouseUp after drag
+  nothing for now until we implement selection box
 */
+
 import React, { useRef } from "react";
 import { Rnd } from "react-rnd";
 import useRefStore from "@/stores/useRefStore";
@@ -75,31 +74,32 @@ export default function RefImage({ url }: RefImageProps) {
     });
   }
 
-  // Modify selection and hide context menu when clicking on RefImage
-  // Use mouseDown instead of click to prevent deselection when dragging multiple images (click is triggered after mouseUp after drag)
+  // See comment at top of file for mouse event logic
   function handleMouseDown(e: MouseEvent) {
     e.stopPropagation(); // Prevent propagating to Canvas
-    // Right mouse button is handled by context menu.
-    if (e.button == 2) return;
-    lastMouseDownX.current = e.clientX;
-    lastMouseDownY.current = e.clientY;
+    if (e.button == 2) return; // Right mouse button is only for context menu
     if (contextMenuShown) {
       hideContextMenu();
     }
+    lastMouseDownX.current = e.clientX;
+    lastMouseDownY.current = e.clientY;
+    if (e.shiftKey) return;
+    if (!selectedUrls.has(url)) {
+      clearSelection();
+      selectUrl(url);
+    }
   }
 
-  // Do selection stuff ONLY on mouseUp so that we can check if it was a click or a drag.
+  // See comment at top of file for mouse event logic
   function handleMouseUp(e: React.MouseEvent) {
     e.stopPropagation(); // Prevent propagating to Rnd and Canvas
-    // Right mouse button is handled by context menu.
-    if (e.button == 2) return;
+    if (e.button == 2) return; // Right mouse button is only for context menu
+    // We are only concerned with mouseUp after a click, not drag
     if (
       e.clientX === lastMouseDownX.current &&
       e.clientY === lastMouseDownY.current
     ) {
-      // This was a "click" (mouseDown and mouseUp at the same position).
       if (e.shiftKey) {
-        // Toggle selection if shift held
         if (selectedUrls.has(url)) {
           unselectUrl(url);
         } else {
@@ -109,27 +109,21 @@ export default function RefImage({ url }: RefImageProps) {
         clearSelection();
         selectUrl(url);
       }
-    } else {
-      // This was a drag (mouseDown and mouseUp at different positions)
     }
   }
 
   function handleContextMenu(e: MouseEvent) {
-    // Aka handle right-click
     // TODO: Show different options than the canvas context menu (e.g. only show delete when right-clicking on an image)
     e.preventDefault();
     e.stopPropagation();
     showContextMenu(e.clientX, e.clientY);
   }
 
-  // Also move all selected images by the same delta when dragging one
   function handleDrag(e: DraggableEvent, data: DraggableData) {
-    // Move all the selected images
     for (const targetUrl of Array.from(selectedUrls)) {
-      // if (targetUrl == url) continue;
       const refData = refMap.get(targetUrl);
       if (!refData) continue;
-      refData.x += data.deltaX;
+      refData.x += data.deltaX; // Move all selected images by same amount
       refData.y += data.deltaY;
       setRef(targetUrl, refData);
     }
@@ -143,7 +137,7 @@ export default function RefImage({ url }: RefImageProps) {
     syncToStore();
   }
 
-  // Force component to calculate its numerical height (instead of "auto") and sync it up to the store
+  // On load, update store using img's numerical height to overwrite "auto"
   function handleImgLoad() {
     if (!img.current || !rnd.current || !refData) return;
     rnd.current.updateSize({
@@ -156,7 +150,7 @@ export default function RefImage({ url }: RefImageProps) {
   if (!refData) return null;
   return (
     <Rnd
-      // Set position and size directly instead of default to re-render on store change
+      // Set position and size to stay in sync with store
       // (e.g. after indirect manipulation as part of a selection)
       position={{ x: refData.x, y: refData.y }}
       size={{ width: refData.width, height: refData.height }}

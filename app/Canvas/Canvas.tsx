@@ -16,16 +16,13 @@ export default function Canvas() {
 
   // Handle mousedown on the canvas (more configurable than click)
   function handleMouseDown(e: React.MouseEvent) {
-    // Right mouse button is handled by context menu.
-    if (e.button == 2) return;
-    // Clear selection unless shift held
-    if (!e.shiftKey) {
-      clearSelection();
-    }
-    // Hide context menu
+    if (e.button == 2) return; // Right mouse button is only for context menu
     if (contextMenuShown) {
       hideContextMenu();
     }
+    // Ignore if shift key is pressed (for multi-select)
+    if (e.shiftKey) return;
+    clearSelection();
   }
 
   // Handle right-clicking on the canvas
