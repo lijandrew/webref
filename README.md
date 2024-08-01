@@ -4,6 +4,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## to-do
 
+- [ ] we need to differentiate between clicks and drags more clearly before multi manipulation will work. cursor store?
 - [ ] multi select manipulation
     - I don't think putting them in a temporary Rnd will work, or it will be extremely convoluted.
     - On each RefImage, calculate the delta x/y and apply to all selected elements using `setRef(url)` on the urls in `selectedUrls`

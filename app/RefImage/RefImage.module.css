@@ -15,7 +15,7 @@
 }
 
 .selected {
-    outline: 1px solid cyan; /* outline instead of border to not affect size */
+    outline: 2px solid cyan; /* outline instead of border to not affect size */
 }
 
 .handle {

@@ -1,0 +1,5 @@
+.Selection {
+    position: fixed;
+    outline: 2px solid cyan;
+    pointer-events: none;
+}

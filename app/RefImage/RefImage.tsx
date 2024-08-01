@@ -1,16 +1,18 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Rnd } from "react-rnd";
 import useRefStore from "@/stores/useRefStore";
 import useSelectionStore from "@/stores/useSelectionStore";
 import useContextMenuStore from "@/stores/useContextMenuStore";
 import styles from "./RefImage.module.css";
-import type { RndDragEvent } from "react-rnd";
+import type { DraggableEvent } from "react-draggable";
+import type { DraggableData } from "react-rnd";
 
-type Props = {
+type RefImageProps = {
   url: string;
 };
 
-export default function RefImage({ url }: Props) {
+export default function RefImage({ url }: RefImageProps) {
+  const refMap = useRefStore((state) => state.refMap);
   const setRef = useRefStore((state) => state.setRef);
   const selectedUrls = useSelectionStore((state) => state.selectedUrls);
   const selectUrl = useSelectionStore((state) => state.selectUrl);
@@ -24,9 +26,11 @@ export default function RefImage({ url }: Props) {
   const refData = useRefStore((state) => state.refMap.get(url));
   const rnd = useRef<Rnd | null>(null);
   const img = useRef<HTMLImageElement | null>(null);
+  const lastMouseDownX = useRef<number | null>(null);
+  const lastMouseDownY = useRef<number | null>(null);
 
   // Sync the position and size of the image with the store
-  function syncRef() {
+  function syncToStore() {
     if (!rnd.current || !refData) return;
     const { x, y } = rnd.current.getDraggablePosition();
     const { width, height } = rnd.current.resizable.size;
@@ -46,26 +50,50 @@ export default function RefImage({ url }: Props) {
     });
   }
 
+  // Pull position and size from store. Needed when moved indirectly as part of a selection because the update comes from the store.
+  // Is there no way to just pass in the x/y value to the Rnd component (not the default prop, because that doesn't trigger rerender)
+  function syncFromStore() {
+    if (!rnd.current || !refData) return;
+    rnd.current.updatePosition({ x: refData.x, y: refData.y });
+    rnd.current.updateSize({ width: refData.width, height: refData.height });
+  }
+
   // Modify selection and hide context menu when clicking on RefImage
   // Use mouseDown instead of click to prevent deselection when dragging multiple images (click is triggered after mouseUp after drag)
   function handleMouseDown(e: MouseEvent) {
-    e.stopPropagation(); // Prevent mousedown from propagating to Canvas
+    e.stopPropagation(); // Prevent propagating to Canvas
     // Right mouse button is handled by context menu.
     if (e.button == 2) return;
-    if (e.shiftKey) {
-      // Toggle selection if shift held
-      if (selectedUrls.has(url)) {
-        unselectUrl(url);
+    lastMouseDownX.current = e.clientX;
+    lastMouseDownY.current = e.clientY;
+    if (contextMenuShown) {
+      hideContextMenu();
+    }
+  }
+
+  // Do selection stuff ONLY on mouseUp so that we can check if it was a click or a drag.
+  function handleMouseUp(e: React.MouseEvent) {
+    e.stopPropagation(); // Prevent propagating to Rnd and Canvas
+    // Right mouse button is handled by context menu.
+    if (e.button == 2) return;
+    if (
+      e.clientX === lastMouseDownX.current &&
+      e.clientY === lastMouseDownY.current
+    ) {
+      // This was a "click" (mouseDown and mouseUp at the same position).
+      if (e.shiftKey) {
+        // Toggle selection if shift held
+        if (selectedUrls.has(url)) {
+          unselectUrl(url);
+        } else {
+          selectUrl(url);
+        }
       } else {
+        clearSelection();
         selectUrl(url);
       }
     } else {
-      // Select only this if shift not held
-      clearSelection();
-      selectUrl(url);
-    }
-    if (contextMenuShown) {
-      hideContextMenu();
+      // This was a drag (mouseDown and mouseUp at different positions)
     }
   }
 
@@ -77,16 +105,25 @@ export default function RefImage({ url }: Props) {
     showContextMenu(e.clientX, e.clientY);
   }
 
-  function handleDrag(e: RndDragEvent) {
-    console.log("drag", e);
+  // Also move all selected images by the same delta when dragging one
+  function handleDrag(e: DraggableEvent, data: DraggableData) {
+    // Move all the selected images
+    for (const targetUrl of Array.from(selectedUrls)) {
+      // if (targetUrl == url) continue;
+      const refData = refMap.get(targetUrl);
+      if (!refData) continue;
+      refData.x += data.deltaX;
+      refData.y += data.deltaY;
+      setRef(targetUrl, refData);
+    }
   }
 
-  function handleDragStop(e: RndDragEvent) {
-    syncRef();
+  function handleDragStop() {
+    syncToStore();
   }
 
-  function handleResizeStop(e: MouseEvent | TouchEvent) {
-    syncRef();
+  function handleResizeStop() {
+    syncToStore();
   }
 
   // Update component and store's RefData on image load to overwrite "auto" height with numerical height
@@ -96,18 +133,23 @@ export default function RefImage({ url }: Props) {
       width: img.current.width,
       height: img.current.height,
     });
-    syncRef();
+    syncToStore();
   }
 
+  // No dependencies because we want to pull from store after every render
+  // in case the image was moved indirectly as part of a selection.
+  useEffect(() => {
+    syncFromStore();
+  });
   if (!refData) return null;
   return (
     <Rnd
       ref={rnd}
       lockAspectRatio={true}
+      onMouseDown={handleMouseDown}
       onDrag={handleDrag}
       onDragStop={handleDragStop}
       onResizeStop={handleResizeStop}
-      onMouseDown={handleMouseDown}
       onContextMenu={handleContextMenu}
       default={{
         x: refData.x,
@@ -116,7 +158,8 @@ export default function RefImage({ url }: Props) {
         height: refData.height,
       }}
     >
-      <div className={styles.RefImage}>
+      {/* onMouseUp not supported by react-rnd so putting it in the inner div */}
+      <div onMouseUp={handleMouseUp} className={styles.RefImage}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           ref={img}
