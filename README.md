@@ -18,6 +18,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
     - Use middle click/scroll to control css transform modifiers on Canvas?
     - Idk how we would achieve infinite canvas, but we can at least give the ability to zoom and pan on a finite canvas
     - We can't modify Canvas size because Rnd measures its parent
+- [ ] touch support
 
 ## for kluo
 
