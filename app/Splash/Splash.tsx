@@ -14,7 +14,7 @@ export default function UploadButton() {
     clearSelection();
     const files = Array.from(e.target.files || []);
     for (const file of files) {
-      console.log("Uploading file", file);
+      console.log("Opening image file");
       const url = URL.createObjectURL(file); // Create URL referencing file
       addRef(url);
       selectUrl(url);

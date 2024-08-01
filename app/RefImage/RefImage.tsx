@@ -14,7 +14,7 @@ mouseUp after click - "shift toggle select, else solo select"
   with shift
     toggle select
   on selected
-    solo select
+    solo select (to solo select something in a group selection) (technically re-performs mouseDown's "on unselected", but that's fine)
   on unselected
     solo select (technically impossible since mouseDown ensures mouseUp's target is selected)
 

@@ -1,5 +1,5 @@
 // I feel like could easily be turned into a easy "fullscreen dropzone" niche npm package.
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import useRefStore from "@/stores/useRefStore";
 import useSelectionStore from "@/stores/useSelectionStore";
 import styles from "./Drop.module.css";
@@ -9,6 +9,7 @@ export default function Drop() {
   const clearSelection = useSelectionStore((state) => state.clearSelection);
   const selectUrl = useSelectionStore((state) => state.selectUrl);
   const [show, setShow] = useState(false);
+  const eventTarget = useRef<EventTarget | null>(null);
   useEffect(() => {
     function handleDragStart(e: DragEvent) {
       e.preventDefault();
@@ -25,12 +26,17 @@ export default function Drop() {
     // Show dropzone only when files are dragged over window to not block pointer events when not needed.
     function handleDragEnter(e: DragEvent) {
       e.preventDefault();
+      eventTarget.current = e.target;
       setShow(true);
     }
     // Hide dropzone when files are dragged out of window (i.e. cancel upload).
     function handleDragLeave(e: DragEvent) {
       e.preventDefault();
-      setShow(false);
+      if (!eventTarget.current || e.target === eventTarget.current) {
+        // Only hide dropzone if the dragleave event is from the same target as dragenter
+        // to prevent hiding dropzone when dragging over children such as RefImages.
+        setShow(false);
+      }
     }
     // Handle files dropped in window.
     function handleDrop(e: DragEvent) {
@@ -40,7 +46,7 @@ export default function Drop() {
       // I think e.dataTransfer.files is more reliable than e.dataTransfer.items.
       for (const file of Array.from(e.dataTransfer.files)) {
         if (file.type.startsWith("image/")) {
-          console.log("Dropping file", file);
+          console.log("Dropping image file");
           const url = URL.createObjectURL(file);
           addRef(url);
           selectUrl(url);
@@ -52,7 +58,7 @@ export default function Drop() {
       const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
       for (const ext of imageExtensions) {
         if (url.endsWith(ext)) {
-          console.log("Dropping URL", url);
+          console.log("Dropping image URL");
           addRef(url);
           selectUrl(url);
           break;

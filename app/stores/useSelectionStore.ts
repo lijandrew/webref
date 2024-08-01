@@ -10,7 +10,7 @@ type SelectionState = {
 const useSelectionStore = create<SelectionState>()((set) => ({
   selectedUrls: new Set(),
   selectUrl: (url: string) => {
-    console.log("Selecting", url);
+    console.log("selectUrl");
     set((state) => {
       const newSelectedUrls = new Set(state.selectedUrls);
       newSelectedUrls.add(url);
@@ -18,7 +18,7 @@ const useSelectionStore = create<SelectionState>()((set) => ({
     });
   },
   unselectUrl: (url: string) => {
-    console.log("Unselecting", url);
+    console.log("unselectUrl");
     set((state) => {
       const newSelectedUrls = new Set(state.selectedUrls);
       newSelectedUrls.delete(url);
@@ -26,7 +26,7 @@ const useSelectionStore = create<SelectionState>()((set) => ({
     });
   },
   clearSelection: () => {
-    console.log("Clearing selection");
+    console.log("clearSelection");
     set({ selectedUrls: new Set() });
   },
 }));

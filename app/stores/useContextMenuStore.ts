@@ -17,7 +17,7 @@ const useContextMenuStore = create<ContextMenuState>()((set) => ({
     set({ contextMenuShown: false });
   },
   showContextMenu: (x: number, y: number) => {
-    console.log("showContextMenu", x, y);
+    console.log("showContextMenu");
     set({ contextMenuX: x, contextMenuY: y, contextMenuShown: true });
   },
 }));
