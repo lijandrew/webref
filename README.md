@@ -34,6 +34,9 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## done
 
+- [x] Fixed drop zone disappearing when dragging over child element (e.g. RefImage)
+- [x] Nice card animation for drag and drop
+- [x] Splash screen prompt to Browse files or drag and drop
 - [x] select all button
 - [x] fine-tune mouse event logic
 - [x] shift click select
