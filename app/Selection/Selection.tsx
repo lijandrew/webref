@@ -33,6 +33,7 @@ export default function Selection() {
   if (selectedUrls.size === 0) return null;
   return (
     // Disable resizing for now
+    // TODO: resize all selected images on drag by setting their resize anchor point to the corner of the Selection Rnd.
     <Rnd
       className={styles.Selection}
       ref={selectionRnd}

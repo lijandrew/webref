@@ -4,6 +4,10 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## to-do
 
+- [ ] clearly plan out the specific mouse event cases, considering shift and selection size
+- [ ] RefImages should be draggable but not resizable. The resizing should be controlled by a separate component that displays the handles around the selection. In other words, the user must select first before resizing but can move without first selecting. Would it be easier then to just manipulate around a single Selection component? And then just track if the images are selected or not and then manipulate the selected ones. So basically the only Rnd with actual controls will be the Selection. And all the images will be indirectly controlled through store updates. Otherwise, we end up treating dragging and resizing differently, handling dragging on the RefImage yet handling resizing on Selection.
+    - [ ] Make RefImage Rnd not directly manipulatable. Still use Rnd for them though, because Rnd abstracts away a lot of stuff. Taking them off Rnd into a custom Rnd could be a stretch goal.
+    - [ ] Make Selection Rnd the direct source of interaction. Basically you're dragging and resizing the *Selection*, and the selected images are playing catch up.
 - [ ] we need to differentiate between clicks and drags more clearly before multi manipulation will work. cursor store?
 - [ ] multi select manipulation
     - I don't think putting them in a temporary Rnd will work, or it will be extremely convoluted.

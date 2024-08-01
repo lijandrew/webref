@@ -1,3 +1,28 @@
+/*
+left mouse button logic
+selection size <= 1:
+  no shift:
+    - mouseDown: select image only
+    - mouseUp after click: nothing
+    - drag: move image
+    - mouseUp after drag: nothing
+  shift:
+    - mouseDown: nothing
+    - mouseUp after click: toggle select image
+    - drag: selection box
+    - mouseUp after drag: nothing / end selection box
+selection size > 1:
+  no shift:
+    - mouseDown: nothing
+    - mouseUp after click: select image Only
+    - drag: move all selected images
+    - mouseUp after drag: nothing
+  shift:
+    - mouseDown: nothing
+    - mouseUp after click: toggle select image
+    - drag: move all selected images in locked axis
+    - mouseUp after drag: nothing
+*/
 import React, { useEffect, useRef } from "react";
 import { Rnd } from "react-rnd";
 import useRefStore from "@/stores/useRefStore";
