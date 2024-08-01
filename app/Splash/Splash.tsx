@@ -1,9 +1,10 @@
 import React from "react";
 import useRefStore from "@/stores/useRefStore";
 import useSelectionStore from "@/stores/useSelectionStore";
-import styles from "./UploadButton.module.css";
+import styles from "./Splash.module.css";
 
 export default function UploadButton() {
+  const refMap = useRefStore((state) => state.refMap);
   const addRef = useRefStore((state) => state.addRef);
   const selectUrl = useSelectionStore((state) => state.selectUrl);
   const clearSelection = useSelectionStore((state) => state.clearSelection);
@@ -22,12 +23,25 @@ export default function UploadButton() {
   }
 
   return (
-    <input
-      className={styles.UploadButton}
-      onChange={handleChange}
-      type="file"
-      multiple
-      accept="image/*"
-    />
+    <label
+      className={styles.Splash}
+      style={{ display: refMap.size === 0 ? "block" : "none" }}
+    >
+      <input
+        style={{ display: "none" }}
+        onChange={handleChange}
+        type="file"
+        multiple
+        accept="image/*"
+      />
+      <div className={styles.text}>
+        Drag and drop images
+        <br />
+        from files or other websites
+        <br />
+        or
+      </div>
+      <div className={styles.button}>Browse</div>
+    </label>
   );
 }

@@ -71,6 +71,13 @@ export default function ContextMenu() {
     }
   }
 
+  function handleOpen() {
+    const fileInput = document.querySelector(
+      "input[type=file]",
+    ) as HTMLInputElement;
+    fileInput?.click();
+  }
+
   useEffect(() => {
     // Detect if user is on Mac to display correct shortcuts.
     if (navigator.userAgent.includes("Mac")) {
@@ -120,6 +127,12 @@ export default function ContextMenu() {
         shortcut={isMac ? "⌘A" : "^A"}
         disabled={false}
         onClick={handleSelectAll}
+      />
+      <ContextMenuButton
+        label="Open"
+        shortcut={isMac ? "⌘O" : "^O"}
+        disabled={false}
+        onClick={handleOpen}
       />
     </div>
   );

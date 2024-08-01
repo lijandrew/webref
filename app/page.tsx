@@ -1,9 +1,9 @@
 "use client";
 
 import Canvas from "@/Canvas/Canvas";
-import UploadButton from "@/UploadButton/UploadButton";
-import ContextMenu from "@/ContextMenu/ContextMenu";
+import Splash from "@/Splash/Splash";
 import Selection from "@/Selection/Selection";
+import ContextMenu from "@/ContextMenu/ContextMenu";
 import Drop from "@/Drop/Drop";
 import Debug from "@/Debug/Debug";
 
@@ -11,11 +11,11 @@ export default function Home() {
   return (
     <main>
       <Canvas />
-      <Debug />
-      <UploadButton />
+      <Splash />
       <Selection />
       <ContextMenu />
       <Drop />
+      <Debug />
     </main>
   );
 }

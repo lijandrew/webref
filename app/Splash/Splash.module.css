@@ -1,0 +1,29 @@
+.Splash {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    text-align: center;
+}
+
+.text {
+    font-size: 20px;
+    color: gray;
+    line-height: 1.5;
+}
+
+.button {
+    margin-top: 10px;
+    background-color: white;
+    padding: 15px 20px;
+    border-radius: 3px;
+    color: dimgrey;
+    cursor: pointer;
+    transition: background-color 100ms ease-out;
+    display: inline-block;
+}
+
+.button:hover {
+    background-color: lightgray;
+}

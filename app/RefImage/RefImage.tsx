@@ -4,19 +4,19 @@ Specifically referring to when cursor is on a RefImage.
 
 mouseDown - "solo select if unselected"
   with shift:
-    ignore
+    ignore (don't interfere with todo selection box)
+  on selected
+    ignore (don't interfere with drag)
   on unselected
     solo select
-  on selected
-    nothing (don't interfere with drag)
 
 mouseUp after click - "shift toggle select, else solo select"
   with shift
     toggle select
-  on unselected
-    impossible bc mouseDown will first select it
   on selected
     solo select
+  on unselected
+    solo select (technically impossible since mouseDown ensures mouseUp's target is selected)
 
 mouseUp after drag
   nothing for now until we implement selection box

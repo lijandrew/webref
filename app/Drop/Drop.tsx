@@ -84,9 +84,13 @@ export default function Drop() {
   }
   return (
     <div className={styles.Drop}>
-      <div className={styles.box1} />
-      <div className={styles.box2} />
-      <div className={styles.box3} />
+      <div className={styles.cards}>
+        <div className={styles.card1} />
+        <div className={styles.card2} />
+        <div className={styles.card3} />
+        <div className={styles.card4} />
+        <div className={styles.card5} />
+      </div>
     </div>
   );
 }

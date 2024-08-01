@@ -17,10 +17,10 @@
 }
 
 .disabled {
-    color: grey;
+    color: gray;
     pointer-events: none;
 }
 
 .shortcut {
-    color: grey;
+    color: gray;
 }
