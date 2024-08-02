@@ -4,6 +4,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## to-do
 
+- comments, cleanup, refactoring
 - drag select
     - detect drag start and drag end on canvas, on drag move update selection box. will this work in FF?
     - loop through all RefImages and test if intersects selection box using x/y/width/height 
@@ -34,6 +35,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## changelog
 
+- Added architecture explanation in useStore
 - better debugging panel. wrench icon to toggle console log and debug buttons
 - only enable resizing when selected to better mirror PureRef behavior
 - reverted back to one single large store because selectUrl needed reference store functions to move the selected RefImage to the top
