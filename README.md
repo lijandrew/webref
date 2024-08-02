@@ -4,10 +4,10 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## to-do
 
-- selection resizing
 - drag select
     - detect drag start and drag end on canvas, on drag move update selection box. will this work in FF?
     - loop through all RefImages and test if intersects selection box using x/y/width/height 
+- selection resizing
 - Big cleanup and refactor
 - arrange images optimally
 - undo/redo - keep stack of "Action" objects - undo function takes in Action and undoes it based on Action type using Action data

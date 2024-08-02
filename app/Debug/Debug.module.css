@@ -1,12 +1,18 @@
 .Debug {
     position: fixed;
-    top: 0;
-    right: 0;
+    top: 5px;
+    right: 5px;
     display: flex;
     flex-direction: column;
     align-items: end;
+    z-index: 999;
 }
 
 .Debug > button {
     display: block;
+}
+
+.wrench {
+    cursor: pointer;
+    margin-bottom: 5px;
 }
