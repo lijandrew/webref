@@ -7,6 +7,8 @@ import ContextMenu from "@/ContextMenu/ContextMenu";
 import Drop from "@/Drop/Drop";
 import Debug from "@/Debug/Debug";
 
+console.log = function () {}; // Comment to enable logging
+
 export default function Home() {
   return (
     <main>
