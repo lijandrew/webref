@@ -27,7 +27,7 @@ export default function Debug() {
       <Image
         className={styles.wrench}
         onClick={handleClick}
-        src={show ? "/wrench-on.svg" : "/wrench-off.svg"}
+        src={show ? "./wrench-on.svg" : "./wrench-off.svg"}
         alt="Devtools"
         width={24}
         height={24}

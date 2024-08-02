@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  basePath: "/webref",
-};
+const nextConfig = {};
 
 export default nextConfig;
