@@ -129,11 +129,7 @@ export default function RefImage({ url }: RefImageProps) {
     }
   }
 
-  function handleDragStop() {
-    syncToStore();
-  }
-
-  function handleResizeStop() {
+  function handleResize() {
     syncToStore();
   }
 
@@ -158,8 +154,7 @@ export default function RefImage({ url }: RefImageProps) {
       lockAspectRatio={true}
       onMouseDown={handleMouseDown}
       onDrag={handleDrag}
-      onDragStop={handleDragStop}
-      onResizeStop={handleResizeStop}
+      onResize={handleResize}
       onContextMenu={handleContextMenu}
     >
       {/* onMouseUp not supported by react-rnd so putting it in the inner div */}
