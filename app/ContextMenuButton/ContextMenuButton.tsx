@@ -1,5 +1,5 @@
 import React from "react";
-import useContextMenuStore from "@/stores/useContextMenuStore";
+import useStore from "@/useStore";
 import styles from "./ContextMenuButton.module.css";
 
 interface ContextMenuButtonProps {
@@ -15,7 +15,7 @@ function ContextMenuButton({
   disabled,
   onClick,
 }: ContextMenuButtonProps) {
-  const hideContextMenu = useContextMenuStore((state) => state.hideContextMenu);
+  const hideContextMenu = useStore((state) => state.hideContextMenu);
   function handleClick() {
     onClick();
     hideContextMenu();

@@ -1,12 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import useSelectionStore from "@/stores/useSelectionStore";
-import useRefStore from "@/stores/useRefStore";
+import useStore from "@/useStore";
 import styles from "./Selection.module.css";
 import { Rnd } from "react-rnd";
 
 export default function Selection() {
-  const refMap = useRefStore((state) => state.refMap);
-  const selectedUrls = useSelectionStore((state) => state.selectedUrls);
+  const refMap = useStore((state) => state.refMap);
+  const selectedUrls = useStore((state) => state.selectedUrls);
   const selectionRnd = useRef<Rnd | null>(null);
 
   // Update the selection box position and size. Must be after render so that selectionRnd is non-null.

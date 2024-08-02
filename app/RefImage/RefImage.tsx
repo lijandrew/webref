@@ -24,9 +24,7 @@ mouseUp after drag
 
 import React, { useRef } from "react";
 import { Rnd } from "react-rnd";
-import useRefStore from "@/stores/useRefStore";
-import useSelectionStore from "@/stores/useSelectionStore";
-import useContextMenuStore from "@/stores/useContextMenuStore";
+import useStore from "@/useStore";
 import styles from "./RefImage.module.css";
 import type { DraggableEvent } from "react-draggable";
 import type { DraggableData } from "react-rnd";
@@ -36,18 +34,16 @@ type RefImageProps = {
 };
 
 export default function RefImage({ url }: RefImageProps) {
-  const refMap = useRefStore((state) => state.refMap);
-  const setRef = useRefStore((state) => state.setRef);
-  const selectedUrls = useSelectionStore((state) => state.selectedUrls);
-  const selectUrl = useSelectionStore((state) => state.selectUrl);
-  const unselectUrl = useSelectionStore((state) => state.unselectUrl);
-  const clearSelection = useSelectionStore((state) => state.clearSelection);
-  const contextMenuShown = useContextMenuStore(
-    (state) => state.contextMenuShown,
-  );
-  const showContextMenu = useContextMenuStore((state) => state.showContextMenu);
-  const hideContextMenu = useContextMenuStore((state) => state.hideContextMenu);
-  const refData = useRefStore((state) => state.refMap.get(url));
+  const refMap = useStore((state) => state.refMap);
+  const setRef = useStore((state) => state.setRef);
+  const selectedUrls = useStore((state) => state.selectedUrls);
+  const selectUrl = useStore((state) => state.selectUrl);
+  const unselectUrl = useStore((state) => state.unselectUrl);
+  const clearSelection = useStore((state) => state.clearSelection);
+  const contextMenuShown = useStore((state) => state.contextMenuShown);
+  const showContextMenu = useStore((state) => state.showContextMenu);
+  const hideContextMenu = useStore((state) => state.hideContextMenu);
+  const refData = useStore((state) => state.refMap.get(url));
   const rnd = useRef<Rnd | null>(null);
   const img = useRef<HTMLImageElement | null>(null);
   const lastMouseDownX = useRef<number | null>(null);

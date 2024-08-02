@@ -1,13 +1,12 @@
 // I feel like could easily be turned into a easy "fullscreen dropzone" niche npm package.
 import React, { useState, useEffect, useRef } from "react";
-import useRefStore from "@/stores/useRefStore";
-import useSelectionStore from "@/stores/useSelectionStore";
+import useStore from "@/useStore";
 import styles from "./Drop.module.css";
 
 export default function Drop() {
-  const addRef = useRefStore((state) => state.addRef);
-  const clearSelection = useSelectionStore((state) => state.clearSelection);
-  const selectUrl = useSelectionStore((state) => state.selectUrl);
+  const addRef = useStore((state) => state.addRef);
+  const clearSelection = useStore((state) => state.clearSelection);
+  const selectUrl = useStore((state) => state.selectUrl);
   const [show, setShow] = useState(false);
   const eventTarget = useRef<EventTarget | null>(null);
   useEffect(() => {

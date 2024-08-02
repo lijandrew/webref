@@ -1,23 +1,19 @@
 import React, { useCallback, useEffect, useState } from "react";
-import useRefStore from "@/stores/useRefStore";
-import useSelectionStore from "@/stores/useSelectionStore";
-import useContextMenuStore from "@/stores/useContextMenuStore";
+import useStore from "@/useStore";
 import ContextMenuButton from "@/ContextMenuButton/ContextMenuButton";
 import styles from "./ContextMenu.module.css";
 
 export default function ContextMenu() {
-  const refMap = useRefStore((state) => state.refMap);
-  const addRef = useRefStore((state) => state.addRef);
-  const delRef = useRefStore((state) => state.delRef);
-  const selectedUrls = useSelectionStore((state) => state.selectedUrls);
-  const selectUrl = useSelectionStore((state) => state.selectUrl);
-  const clearSelection = useSelectionStore((state) => state.clearSelection);
-  const contextMenuX = useContextMenuStore((state) => state.contextMenuX);
-  const contextMenuY = useContextMenuStore((state) => state.contextMenuY);
-  const contextMenuShown = useContextMenuStore(
-    (state) => state.contextMenuShown,
-  );
-  const hideContextMenu = useContextMenuStore((state) => state.hideContextMenu);
+  const refMap = useStore((state) => state.refMap);
+  const addRef = useStore((state) => state.addRef);
+  const delRef = useStore((state) => state.delRef);
+  const selectedUrls = useStore((state) => state.selectedUrls);
+  const selectUrl = useStore((state) => state.selectUrl);
+  const clearSelection = useStore((state) => state.clearSelection);
+  const contextMenuX = useStore((state) => state.contextMenuX);
+  const contextMenuY = useStore((state) => state.contextMenuY);
+  const contextMenuShown = useStore((state) => state.contextMenuShown);
+  const hideContextMenu = useStore((state) => state.hideContextMenu);
   const [isMac, setIsMac] = useState(false);
 
   // useCallback caches function so it won't be recreated each render. Needed for useEffect.

@@ -1,13 +1,12 @@
 import React from "react";
-import useRefStore from "@/stores/useRefStore";
-import useSelectionStore from "@/stores/useSelectionStore";
+import useStore from "@/useStore";
 import styles from "./Splash.module.css";
 
 export default function UploadButton() {
-  const refMap = useRefStore((state) => state.refMap);
-  const addRef = useRefStore((state) => state.addRef);
-  const selectUrl = useSelectionStore((state) => state.selectUrl);
-  const clearSelection = useSelectionStore((state) => state.clearSelection);
+  const refMap = useStore((state) => state.refMap);
+  const addRef = useStore((state) => state.addRef);
+  const selectUrl = useStore((state) => state.selectUrl);
+  const clearSelection = useStore((state) => state.clearSelection);
 
   // Creates new RefImages and selects them all.
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {

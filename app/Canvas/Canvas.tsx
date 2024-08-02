@@ -1,18 +1,14 @@
 import React from "react";
-import useRefStore from "@/stores/useRefStore";
-import useContextMenuStore from "@/stores/useContextMenuStore";
-import useSelectionStore from "@/stores/useSelectionStore";
+import useStore from "@/useStore";
 import RefImage from "@/RefImage/RefImage";
 import styles from "./Canvas.module.css";
 
 export default function Canvas() {
-  const refMap = useRefStore((state) => state.refMap);
-  const clearSelection = useSelectionStore((state) => state.clearSelection);
-  const contextMenuShown = useContextMenuStore(
-    (state) => state.contextMenuShown,
-  );
-  const showContextMenu = useContextMenuStore((state) => state.showContextMenu);
-  const hideContextMenu = useContextMenuStore((state) => state.hideContextMenu);
+  const refMap = useStore((state) => state.refMap);
+  const clearSelection = useStore((state) => state.clearSelection);
+  const contextMenuShown = useStore((state) => state.contextMenuShown);
+  const showContextMenu = useStore((state) => state.showContextMenu);
+  const hideContextMenu = useStore((state) => state.hideContextMenu);
 
   // Handle mousedown on the canvas (more configurable than click)
   function handleMouseDown(e: React.MouseEvent) {
@@ -31,15 +27,22 @@ export default function Canvas() {
     showContextMenu(e.clientX, e.clientY);
   }
 
+  // Create list of RefImage components, saving the last selected one to put on top
+  function getRefImageComponents() {
+    const components = [];
+    for (const url of Array.from(refMap.keys())) {
+      components.push(<RefImage key={url} url={url} />);
+    }
+    return components;
+  }
+
   return (
     <div
       className={styles.Canvas}
       onMouseDown={handleMouseDown}
       onContextMenu={handleContextMenu}
     >
-      {Array.from(refMap.keys()).map((url) => (
-        <RefImage key={url} url={url} />
-      ))}
+      {getRefImageComponents()}
     </div>
   );
 }

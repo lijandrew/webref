@@ -11,7 +11,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 - Big cleanup and refactor
 - arrange images optimally
 - undo/redo - keep stack of "Action" objects - undo function takes in Action and undoes it based on Action type using Action data
-- save useRefStore state in browser storage using `zustand` persist
+- save useStore state in browser storage using `zustand` persist
     - Map serializing can be handled with superjson, but what about storing the blobs? IndexedDB looks like the solution, but it seems complicated.
 - pan and zoom canvas
     - Use middle click/scroll to control css transform modifiers on Canvas?
@@ -34,6 +34,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## changelog
 
+- reverted back to one single large store because selectUrl needed reference store functions to move the selected RefImage to the top
 - CMD/CTRL shortcuts
 - Fixed drop zone disappearing when dragging over child element (e.g. RefImage)
 - Nice card animation for drag and drop

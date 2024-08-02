@@ -1,10 +1,9 @@
-import useRefStore from "@/stores/useRefStore";
-import useSelectionStore from "@/stores/useSelectionStore";
+import useStore from "@/useStore";
 import styles from "./Debug.module.css";
 
 export default function Debug() {
-  const refMap = useRefStore((state) => state.refMap);
-  const selectedUrls = useSelectionStore((state) => state.selectedUrls);
+  const refMap = useStore((state) => state.refMap);
+  const selectedUrls = useStore((state) => state.selectedUrls);
 
   return (
     <div className={styles.Debug}>
