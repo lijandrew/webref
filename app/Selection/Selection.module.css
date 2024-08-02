@@ -3,3 +3,14 @@
     outline: 2px solid cyan;
     pointer-events: none;
 }
+
+.Selection > * {
+    /* 
+    TODO: for resize logic:
+    Disable pointer events on main .Selection to allow dragging the RefImage Rnd underneath,
+    but re-enable pointer events for all children of .Selection to allow dragging the handles.
+    Selection resizing currently not implemented because it seems like hell to handle all the resizing stuff manually for selected RefImage.
+    Looking for a more straightforward solution.
+    */
+    pointer-events: auto;
+}

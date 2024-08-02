@@ -174,8 +174,7 @@ export default function RefImage({ url }: RefImageProps) {
           className={`${styles.innerImg} ${selectedUrls.has(url) ? styles.selected : ""}`}
           alt=""
         />
-        {/* ...but show handles only when only image selected */}
-        {selectedUrls.has(url) && selectedUrls.size === 1 && (
+        {selectedUrls.has(url) && (
           <React.Fragment>
             <div className={`${styles.handle} ${styles.handle1}`} />
             <div className={`${styles.handle} ${styles.handle2}`} />

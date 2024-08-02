@@ -65,11 +65,11 @@ export default function ContextMenu() {
     (e.target as HTMLButtonElement).click();
   }
 
-  function handleSelectAll() {
+  const handleSelectAll = useCallback(() => {
     for (const url of Array.from(refMap.keys())) {
       selectUrl(url);
     }
-  }
+  }, [refMap, selectUrl]);
 
   function handleOpen() {
     const fileInput = document.querySelector(
@@ -91,9 +91,7 @@ export default function ContextMenu() {
         handleDelete();
       } else if (e.ctrlKey || e.metaKey) {
         // Ctrl/Cmd shortcuts
-        if (e.key === "v") {
-          handlePaste();
-        } else if (e.key === "a") {
+        if (e.key === "a") {
           e.preventDefault();
           handleSelectAll();
         } else if (e.key === "o") {
