@@ -5,6 +5,7 @@
     transform: translate(-50%, -50%);
     display: flex;
     text-align: center;
+    user-select: none;
 }
 
 .text {
