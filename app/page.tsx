@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <link rel="shortcut icon" href="./favicon.ico" />
+        <link rel="shortcut icon" href="webref/favicon.ico" />
       </Head>
       <Canvas />
       <Splash />
