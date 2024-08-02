@@ -89,6 +89,17 @@ export default function ContextMenu() {
         hideContextMenu();
       } else if (e.key === "Delete" || e.key == "Backspace") {
         handleDelete();
+      } else if (e.ctrlKey || e.metaKey) {
+        // Ctrl/Cmd shortcuts
+        if (e.key === "v") {
+          handlePaste();
+        } else if (e.key === "a") {
+          e.preventDefault();
+          handleSelectAll();
+        } else if (e.key === "o") {
+          e.preventDefault();
+          handleOpen();
+        }
       }
     }
     document.addEventListener("keydown", handleKeyDown);
@@ -97,7 +108,13 @@ export default function ContextMenu() {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("paste", handlePaste);
     };
-  }, [contextMenuShown, handleDelete, handlePaste, hideContextMenu]);
+  }, [
+    contextMenuShown,
+    handleDelete,
+    handlePaste,
+    handleSelectAll,
+    hideContextMenu,
+  ]);
 
   return (
     <div
