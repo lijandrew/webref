@@ -34,6 +34,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## changelog
 
+- better debugging panel. wrench icon to toggle console log and debug buttons
 - only enable resizing when selected to better mirror PureRef behavior
 - reverted back to one single large store because selectUrl needed reference store functions to move the selected RefImage to the top
 - CMD/CTRL shortcuts
