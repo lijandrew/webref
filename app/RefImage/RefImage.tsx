@@ -152,6 +152,7 @@ export default function RefImage({ url }: RefImageProps) {
       onDrag={handleDrag}
       onResize={handleResize}
       onContextMenu={handleContextMenu}
+      enableResizing={selectedUrls.has(url)}
     >
       {/* onMouseUp not supported by react-rnd so putting it in the inner div */}
       <div onMouseUp={handleMouseUp} className={styles.RefImage}>

@@ -34,6 +34,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## changelog
 
+- only enable resizing when selected to better mirror PureRef behavior
 - reverted back to one single large store because selectUrl needed reference store functions to move the selected RefImage to the top
 - CMD/CTRL shortcuts
 - Fixed drop zone disappearing when dragging over child element (e.g. RefImage)
