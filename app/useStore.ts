@@ -4,14 +4,14 @@ Useful state data is stored in zustand's global store in 3 sections:
 - The reference section stores reference image data
   - RefImage components read from and update this map to decide how/what/where to render
   - RefImage components update/sync the store when they are dragged or resized.
-  - File input methods add to this map.
+  - File input methods add to this map, and deletion methods remove from this map.
 - The selection section handles everything selection-related
   - selection events, like clicking and shift-clicking work by modifying selectedUrls
-  - selection displays, like the cyan box, are drawn in proper size/position by reading from selectedUrls and cross-referencing with data from refMap
+  - the size and positioning of the cyan multi-selection box is calculated by cross-referencing selectedUrls with refMap
 - The context menu section handles the context menu
   - Pretty straightforward, just show/hide the context menu and set its position
 
-Everything else, like the nitty-gritty details of how to handle selections, mouse events, etc., is handled by the components themselves.
+Everything else, like mouse event logic, file handling, dragging/resizing, UI, etc., is handled by the components themselves.
 */
 
 import { create } from "zustand";
