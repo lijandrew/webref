@@ -2,9 +2,18 @@
 
 Browser-based reference board (like PureRef) for people who don't want to or can't install apps (e.g. Chromebooks/managed computers/personal preference).
 
+## high priority to-do
+
+- pan and zoom infinite canvas
+    - panning
+        - Use middle click/scroll to control css transform modifiers on Canvas?
+        - ?
+    - infinite canvas
+        - We can't modify Canvas size because Rnd measures its parent...
+        - ?
+
 ## to-do
 
-- comments, cleanup, refactoring
 - drag select
     - detect drag start and drag end on canvas, on drag move update selection box. will this work in FF?
     - loop through all RefImages and test if intersects selection box using x/y/width/height 
@@ -13,10 +22,6 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 - undo/redo - keep stack of "Action" objects - undo function takes in Action and undoes it based on Action type using Action data
 - save useStore state in browser storage using `zustand` persist
     - Map serializing can be handled with superjson, but what about storing the blobs? IndexedDB looks like the solution, but it seems complicated.
-- pan and zoom canvas
-    - Use middle click/scroll to control css transform modifiers on Canvas?
-    - Idk how we would achieve infinite canvas, but we can at least give the ability to zoom and pan on a finite canvas
-    - We can't modify Canvas size because Rnd measures its parent
 - touch support
 
 ## for kluo
