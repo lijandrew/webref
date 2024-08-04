@@ -1,3 +1,12 @@
+/*
+Selection.tsx
+
+Component for the selection box, a react-rnd that surrounds all selected images.
+Calculates bounds by finding min and max x and y of all selected images on each render.
+Does not handle group dragging because that mouse event is handled by the RefImage component.
+TODO: support group resizing by setting the resize anchor points of all selected RefImages to the corner of the Selection Rnd.
+*/
+
 import React, { useEffect, useRef } from "react";
 import useStore from "@/useStore";
 import styles from "./Selection.module.css";

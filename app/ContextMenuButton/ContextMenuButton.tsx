@@ -1,3 +1,10 @@
+/*
+ContextMenuButton.tsx
+
+Renders a button for the context menu.
+When clicked, it calls the provided onClick function and hides the context menu.
+*/
+
 import React from "react";
 import useStore from "@/useStore";
 import styles from "./ContextMenuButton.module.css";

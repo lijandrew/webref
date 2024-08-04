@@ -1,3 +1,9 @@
+/*
+Canvas.tsx
+
+Renders all the RefImage components and handles mouse events on the canvas.
+*/
+
 import React from "react";
 import useStore from "@/useStore";
 import RefImage from "@/RefImage/RefImage";

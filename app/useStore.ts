@@ -1,13 +1,20 @@
 /*
-The way this app works is pretty much entirely through zustand's global store.
-Useful state data is stored in zustand's global store in 3 sections:
+useStore.ts
+
+Global store for the app, created with Zustand (an entirely hook-based Redux alternative).
+The create function from Zustand creates a hook that provides a global store.
+We import and use the hook in components to access and modify the store.
+The app's functionality pretty much revolves around this global store, which contains 3 sections:
+
 - The reference section stores reference image data
   - RefImage components read from and update this map to decide how/what/where to render
   - RefImage components update/sync the store when they are dragged or resized.
   - File input methods add to this map, and deletion methods remove from this map.
+
 - The selection section handles everything selection-related
   - selection events, like clicking and shift-clicking work by modifying selectedUrls
   - the size and positioning of the cyan multi-selection box is calculated by cross-referencing selectedUrls with refMap
+
 - The context menu section handles the context menu
   - Pretty straightforward, just show/hide the context menu and set its position
 

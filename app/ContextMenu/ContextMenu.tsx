@@ -1,3 +1,11 @@
+/*
+ContextMenu.tsx
+
+Contains and renders the context menu, which is built from ContextMenuButton components.
+Handles all of the operations a user can perform (e.g. delete, paste, select all, open).
+Also binds the relevant keyboard shortcuts.
+*/
+
 import React, { useCallback, useEffect, useState } from "react";
 import useStore from "@/useStore";
 import ContextMenuButton from "@/ContextMenuButton/ContextMenuButton";

@@ -1,3 +1,10 @@
+/*
+Splash.tsx
+
+Component for the splash screen, shown when no reference images are loaded.
+Prompts the user to drag and drop images or click the browse button to add reference images.
+*/
+
 import React from "react";
 import useStore from "@/useStore";
 import styles from "./Splash.module.css";

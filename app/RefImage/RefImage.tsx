@@ -1,6 +1,11 @@
 /*
-Left mouse button logic based on testing in PureRef.
-Specifically referring to when cursor is on a RefImage.
+RefImage.tsx
+
+Component for a single reference image, draggable and resizable via react-rnd.
+Pulls x, y, width, and height from the store on each render.
+Pushes x, y, width, and height to the store on each drag or resize.
+
+Uses specific mouseDown/mouseUp logic for intuitive select/deselect/drag:
 
 mouseDown - "solo select if unselected"
   with shift:

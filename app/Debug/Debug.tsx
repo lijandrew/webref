@@ -1,3 +1,10 @@
+/*
+Debug.tsx
+
+A debug menu with buttons to log store information to the console.
+Enables and disables console.log when toggled.
+*/
+
 import React, { useState } from "react";
 import useStore from "@/useStore";
 import styles from "./Debug.module.css";

@@ -1,4 +1,12 @@
-// I feel like could easily be turned into a easy "fullscreen dropzone" niche npm package.
+/*
+Drop.tsx
+
+An animated, fullscreen dropzone that accepts image files and URLs.
+Uses strategies like:
+- Only showing when files are dragged over window to not block pointer events when not needed
+- Comparing dragenter and dragleave targets to prevent hiding dropzone when dragging over children
+*/
+
 import React, { useState, useEffect, useRef } from "react";
 import useStore from "@/useStore";
 import styles from "./Drop.module.css";
@@ -87,6 +95,7 @@ export default function Drop() {
   if (!show) {
     return null;
   }
+  console.log("drop render");
   return (
     <div className={styles.Drop}>
       <div className={styles.cards}>
