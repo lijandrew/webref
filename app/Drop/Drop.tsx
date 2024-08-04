@@ -90,7 +90,7 @@ export default function Drop() {
       document.removeEventListener("dragleave", handleDragLeave);
       document.removeEventListener("drop", handleDrop);
     };
-  });
+  }, [addRef, clearSelection, selectUrl]);
 
   if (!show) {
     return null;
