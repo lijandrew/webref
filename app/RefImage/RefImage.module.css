@@ -5,7 +5,7 @@
 }
 
 .innerImg {
-    max-width: 100%; /* Prevents image from overflowing Rnd */
+    width: 100%; /* Sets width to fill Rnd */
     display: block;
     /*
     "display: block" removes the small gap below imgs

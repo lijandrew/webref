@@ -5,12 +5,11 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 ## high priority to-do
 
 - pan and zoom infinite canvas
+    - implement my own Rnd
     - panning
         - Use middle click/scroll to control css transform modifiers on Canvas?
-        - ?
     - infinite canvas
         - We can't modify Canvas size because Rnd measures its parent...
-        - ?
 
 ## to-do
 
@@ -21,6 +20,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 - arrange images optimally
 - undo/redo - keep stack of "Action" objects - undo function takes in Action and undoes it based on Action type using Action data
 - save useStore state in browser storage using `zustand` persist
+    - IndexedDB - how to store blobs?
     - Map serializing can be handled with superjson, but what about storing the blobs? IndexedDB looks like the solution, but it seems complicated.
 - touch support
 
@@ -39,6 +39,7 @@ Browser-based reference board (like PureRef) for people who don't want to or can
 
 ## changelog
 
+- Changed refImage img maxWidth to width to fix image size limit
 - Added architecture explanation in useStore
 - better debugging panel. wrench icon to toggle console log and debug buttons
 - only enable resizing when selected to better mirror PureRef behavior
