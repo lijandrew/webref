@@ -15,6 +15,7 @@ import { Rnd } from "react-rnd";
 export default function Selection() {
   const refMap = useStore((state) => state.refMap);
   const selectedUrls = useStore((state) => state.selectedUrls);
+  const scale = useStore((state) => state.scale);
   const selectionRnd = useRef<Rnd | null>(null);
 
   // Update the selection box position and size. Must be after render so that selectionRnd is non-null.
@@ -52,6 +53,7 @@ export default function Selection() {
       lockAspectRatio={true}
       enableResizing={false}
       disableDragging={true}
+      scale={scale}
     />
   );
 }

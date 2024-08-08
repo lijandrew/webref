@@ -6,17 +6,22 @@ The create function from Zustand creates a hook that provides a global store.
 We import and use the hook in components to access and modify the store.
 The app's functionality pretty much revolves around this global store, which contains 3 sections:
 
-- The reference section stores reference image data
+Sections:
+
+- reference
   - RefImage components read from and update this map to decide how/what/where to render
   - RefImage components update/sync the store when they are dragged or resized.
   - File input methods add to this map, and deletion methods remove from this map.
 
-- The selection section handles everything selection-related
+- selection
   - selection events, like clicking and shift-clicking work by modifying selectedUrls
   - the size and positioning of the cyan multi-selection box is calculated by cross-referencing selectedUrls with refMap
 
-- The context menu section handles the context menu
+- context menu
   - Pretty straightforward, just show/hide the context menu and set its position
+
+- pan and zoom
+  - Stores scale to pass to Rnds to compensate for scale when dragging and resizing
 
 Everything else, like mouse event logic, file handling, dragging/resizing, UI, etc., is handled by the components themselves.
 */
@@ -53,7 +58,7 @@ type State = {
   hideContextMenu: () => void; // Hide context menu
   showContextMenu: (x: number, y: number) => void; // Show context menu at x, y
 
-  //////// Canvas pan and zoom state (?) ////////
+  //////// Canvas pan and zoom state ////////
   scale: number; // Zoom level, passed into Rnd to get correct drag and resize deltas when the parent is scaled
   setScale: (scale: number) => void; // Set zoom level
 };
@@ -145,7 +150,7 @@ const useStore = create<State>()((set) => ({
     set({ contextMenuX: x, contextMenuY: y, contextMenuShown: true });
   },
 
-  //////// Canvas pan and zoom state (?) ////////
+  //////// Canvas pan and zoom state ////////
   scale: 1,
   setScale: (scale: number) => {
     console.log("setScale");
