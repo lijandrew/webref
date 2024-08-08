@@ -2,7 +2,7 @@
 Canvas.tsx
 
 Renders all the RefImage components, handles mouse events on the canvas,
-and manages zoom and pan of the canvas (via the transformWrapper).
+and manages zoom and pan of the canvas (by applying the transforms to transformWrapper instead of canvas directly).
 */
 
 import React, { useState, useRef } from "react";
