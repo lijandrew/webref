@@ -52,6 +52,10 @@ type State = {
   contextMenuShown: boolean; // Whether context menu is shown
   hideContextMenu: () => void; // Hide context menu
   showContextMenu: (x: number, y: number) => void; // Show context menu at x, y
+
+  //////// Canvas pan and zoom state (?) ////////
+  scale: number; // Zoom level, passed into Rnd to get correct drag and resize deltas when the parent is scaled
+  setScale: (scale: number) => void; // Set zoom level
 };
 
 // Zustand with Typescript requires curried create. Notice create<T>() instead of create<T>.
@@ -139,6 +143,13 @@ const useStore = create<State>()((set) => ({
   showContextMenu: (x: number, y: number) => {
     console.log("showContextMenu");
     set({ contextMenuX: x, contextMenuY: y, contextMenuShown: true });
+  },
+
+  //////// Canvas pan and zoom state (?) ////////
+  scale: 1,
+  setScale: (scale: number) => {
+    console.log("setScale");
+    set({ scale });
   },
 }));
 

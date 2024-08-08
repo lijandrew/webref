@@ -1,6 +1,7 @@
 .RefImage {
     position: relative;
     user-select: none;
+    cursor: default;
     -webkit-user-select: none;
 }
 

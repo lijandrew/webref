@@ -49,16 +49,17 @@ export default function RefImage({ url }: RefImageProps) {
   const showContextMenu = useStore((state) => state.showContextMenu);
   const hideContextMenu = useStore((state) => state.hideContextMenu);
   const refData = useStore((state) => state.refMap.get(url));
-  const rnd = useRef<Rnd | null>(null);
+  const refImageRnd = useRef<Rnd | null>(null);
   const img = useRef<HTMLImageElement | null>(null);
   const lastMouseDownX = useRef<number | null>(null);
   const lastMouseDownY = useRef<number | null>(null);
+  const scale = useStore((state) => state.scale);
 
   // Sync the position and size of the image with the store
   function syncToStore() {
-    if (!rnd.current || !refData) return;
-    const { x, y } = rnd.current.getDraggablePosition();
-    const { width, height } = rnd.current.resizable.size;
+    if (!refImageRnd.current || !refData) return;
+    const { x, y } = refImageRnd.current.getDraggablePosition();
+    const { width, height } = refImageRnd.current.resizable.size;
     // Only update store if there are changes to prevent infinite loop
     if (
       refData.x === x &&
@@ -77,8 +78,8 @@ export default function RefImage({ url }: RefImageProps) {
 
   // See comment at top of file for mouse event logic
   function handleMouseDown(e: MouseEvent) {
-    e.stopPropagation(); // Prevent propagating to Canvas
-    if (e.button == 2) return; // Right mouse button is only for context menu
+    if (e.button !== 0) return;
+    e.stopPropagation();
     if (contextMenuShown) {
       hideContextMenu();
     }
@@ -94,7 +95,7 @@ export default function RefImage({ url }: RefImageProps) {
   // See comment at top of file for mouse event logic
   function handleMouseUp(e: React.MouseEvent) {
     e.stopPropagation(); // Prevent propagating to Rnd and Canvas
-    if (e.button == 2) return; // Right mouse button is only for context menu
+    if (e.button !== 0) return; // Right mouse button is only for context menu
     // We are only concerned with mouseUp after a click, not drag
     if (
       e.clientX === lastMouseDownX.current &&
@@ -136,8 +137,8 @@ export default function RefImage({ url }: RefImageProps) {
 
   // On load, update store using img's numerical height to overwrite "auto"
   function handleImgLoad() {
-    if (!img.current || !rnd.current || !refData) return;
-    rnd.current.updateSize({
+    if (!img.current || !refImageRnd.current || !refData) return;
+    refImageRnd.current.updateSize({
       width: img.current.width,
       height: img.current.height,
     });
@@ -151,13 +152,14 @@ export default function RefImage({ url }: RefImageProps) {
       // (e.g. after indirect manipulation as part of a selection)
       position={{ x: refData.x, y: refData.y }}
       size={{ width: refData.width, height: refData.height }}
-      ref={rnd}
+      ref={refImageRnd}
       lockAspectRatio={true}
       onMouseDown={handleMouseDown}
       onDrag={handleDrag}
       onResize={handleResize}
       onContextMenu={handleContextMenu}
       enableResizing={selectedUrls.has(url)}
+      scale={scale}
     >
       {/* onMouseUp not supported by react-rnd so putting it in the inner div */}
       <div onMouseUp={handleMouseUp} className={styles.RefImage}>
