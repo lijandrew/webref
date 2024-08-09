@@ -23,7 +23,6 @@ Great for those unable/unwilling to install apps (Chromebooks, managed computers
 
 ## To-do
 
-- make scroll zoom relative to mouse position
 - add images centered on mouse location instead of at (0, 0)
 - prevent selection outline and corner handles from scaling with zoom. how? any way to set fixed px width despite parent scaling?
 - drag select
@@ -49,6 +48,7 @@ Great for those unable/unwilling to install apps (Chromebooks, managed computers
 
 ## Changelog
 
+- make scroll zoom relative to mouse position (added anvanka/panzoom)
 - Added app architecture explanation markdown file
 - infinite canvas, pan, and zoom! turns out Rnds play well even when moved outside bounds of parent. achieved by simply putting canvas contents in a transform wrapper and applying translate and scale to the wrapper.
 - Changed refImage img maxWidth to width to fix image size limit
