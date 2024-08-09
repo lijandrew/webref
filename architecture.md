@@ -36,7 +36,7 @@ The easiest way to explain how the app works is probably to walk through an exam
 - The app's functionality revolves around the zustand global store.
     - Anything involving reference images goes through `refMap` or its helper functions.
     - The global store also contains other widely-used state information, such as a Set tracking which reference images are selected. See comments in `useStore.ts` for more.
-- Everything else, like mouse event logic, file handling, dragging/resizing, UI, etc., is handled by the components themselves.
+- Everything else, like mouse event logic, file handling, dragging/resizing, dropzone event listeners, etc., is handled by the components themselves.
     - `RefImage` both pulls and pushes updates to `refMap` to stay in sync. Some features, like multi-image dragging, are made possible by this two-way sync.
     - `RefImage` uses complex logic to differentiate mouse event intents.
     - The canvas is zoomed and panned by applying CSS transformations to an inner wrapper div.
