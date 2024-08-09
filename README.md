@@ -1,18 +1,31 @@
-## idea
+# Table of contents
 
-Browser-based reference board (like PureRef) for people who don't want to or can't install apps (e.g. Chromebooks/managed computers/personal preference).
+1. [Introduction](#introduction)
+2. [Features](#features)
+3. [To-do](#to-do)
+4. [Changelog](#changelog)
 
-## high priority to-do
+## Introduction
 
-- pan and zoom infinite canvas
-    - implement my own Rnd
-    - panning
-        - Use middle click/scroll to control css transform modifiers on Canvas?
-    - infinite canvas
-        - We can't modify Canvas size because Rnd measures its parent...
+Browser-based infinite canvas reference board inspired by PureRef.  
+Great for those unable/unwilling to install apps (Chromebooks, managed computers, personal preference).
 
-## to-do
+## Features
 
+- Zoomable, pannable, infinite canvas
+- Convenient ways to open images
+    - Drag and drop images directly from websites
+    - Paste images from clipboard
+    - Or just upload or drag and drop images from files
+- Move and resize images
+- Keyboard shortcuts
+- WIP!
+
+## To-do
+
+- make scroll zoom relative to mouse position
+- add images centered on mouse location instead of at (0, 0)
+- prevent selection outline and corner handles from scaling with zoom. how? any way to set fixed px width despite parent scaling?
 - drag select
     - detect drag start and drag end on canvas, on drag move update selection box. will this work in FF?
     - loop through all RefImages and test if intersects selection box using x/y/width/height 
@@ -23,9 +36,6 @@ Browser-based reference board (like PureRef) for people who don't want to or can
     - IndexedDB - how to store blobs?
     - Map serializing can be handled with superjson, but what about storing the blobs? IndexedDB looks like the solution, but it seems complicated.
 - touch support
-
-## for kluo
-
 - export into zip (image files + JSON describing x,y,width,height)
     - We use the React.js Javascript library with the Next.js React Framework
     - https://react.dev/ - React.js tutorial
@@ -37,8 +47,10 @@ Browser-based reference board (like PureRef) for people who don't want to or can
         4. I added JSZip to the project. https://stuk.github.io/jszip/ You can use this to zip the files.
 - import from archive
 
-## changelog
+## Changelog
 
+- Added app architecture explanation markdown file
+- infinite canvas, pan, and zoom! turns out Rnds play well even when moved outside bounds of parent. achieved by simply putting canvas contents in a transform wrapper and applying translate and scale to the wrapper.
 - Changed refImage img maxWidth to width to fix image size limit
 - Added architecture explanation in useStore
 - better debugging panel. wrench icon to toggle console log and debug buttons

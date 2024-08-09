@@ -1,8 +1,7 @@
 /*
 Canvas.tsx
 
-Renders all the RefImage components, handles mouse events on the canvas,
-and manages zoom and pan of the canvas (by applying the transforms to transformWrapper instead of canvas directly).
+Renders all the RefImage components, handles mouse events on the canvas, and manages zoom and pan.
 */
 
 import React, { useState, useRef } from "react";
@@ -92,10 +91,9 @@ export default function Canvas() {
       <div
         /*
         Zoom and pan are applied to transformWrapper, not the canvas directly.
-        This is because, luckily, when outside of the transformWrapper, 
-        RefImage and Selection's Rnds still work as expected yet get affected by the transform.
-        This allows the canvas to remain fullscreen for other purposes (e.g. deselecting, context menu).
-        This also lets us give transformWrapper no background, effectively simulating an infinite canvas.
+        This is because, luckily, when outside of the transformWrapper,
+        Rnds still work as expected yet are affected by the transform.
+        This allows the canvas to remain fullscreen for other purposes (deselect, context menu).
         */
         style={{
           transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`,
@@ -104,6 +102,7 @@ export default function Canvas() {
       >
         {createRefImageComponents()}
         <Splash />
+        {/* Splash and Selection scale with content, so they need to be in transformWrapper */}
         <Selection />
       </div>
       <div

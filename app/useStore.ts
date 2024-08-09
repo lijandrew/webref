@@ -4,7 +4,7 @@ useStore.ts
 Global store for the app, created with Zustand (an entirely hook-based Redux alternative).
 The create function from Zustand creates a hook that provides a global store.
 We import and use the hook in components to access and modify the store.
-The app's functionality pretty much revolves around this global store, which contains 3 sections:
+The app's functionality pretty much revolves around this global store, which is broken up into sections:
 
 Sections:
 
