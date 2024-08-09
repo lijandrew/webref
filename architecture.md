@@ -21,7 +21,7 @@ The easiest way to explain how the app works is probably to walk through an exam
     - Two-way syncing enables multi-selection operations (e.g. dragging three selected images at once) by updating the `refMap` entries of all selected images, manipulating them "indirectly".
     - This syncing is also necessary because components like `Selection` rely on the globally-accessible `refMap` for the up-to-date positions and sizes of `RefImage` components.
 - There is complex mouse event logic to differentiate intents (e.g. "Is this `mousedown` the start of a drag or an attempt to select the image?") that is probably best understood by reading the code, specifically `RefImage.tsx`'s top comment and mouse handler functions.
-- See `useState.ts`, `RefImage.tsx`, `Selection.tsx`
+- See `useState.ts`, `RefImage.tsx`, `Selection.tsx`.
 
 ### 3. User zooms and pans
 
@@ -29,11 +29,14 @@ The easiest way to explain how the app works is probably to walk through an exam
 - These transformations are applied to `transformWrapper` in `Canvas`, which contains all `RefImage` components and anything that should respond to panning and zooming.
 - We apply the transforms to `transformWrapper` rather than the `Canvas` div itself so that `Canvas` can remain fullscreen and clickable for functionality like context menu and deselect.
 - Luckily, `Rnd` continues to work when outside the bounds of its parent element (`transformWrapper` in this case), effectively allowing for an infinite canvas.
-- See `Canvas.tsx`
+- See `Canvas.tsx`.
 
 ### Summary
 
-- The app's core functionality essentially revolves around the zustand global store.
+- The app's functionality revolves around the zustand global store.
     - Anything involving reference images goes through `refMap` or its helper functions.
     - The global store also contains other widely-used state information, such as a Set tracking which reference images are selected. See comments in `useStore.ts` for more.
-    - Everything else, like mouse event logic, file handling, dragging/resizing, UI, etc., is handled by the components themselves.
+- Everything else, like mouse event logic, file handling, dragging/resizing, UI, etc., is handled by the components themselves.
+    - `RefImage` both pulls and pushes updates to `refMap` to stay in sync. Some features, like multi-image dragging, are made possible by this two-way sync.
+    - `RefImage` uses complex logic to differentiate mouse event intents.
+    - The canvas is zoomed and panned by applying CSS transformations to an inner wrapper div.
