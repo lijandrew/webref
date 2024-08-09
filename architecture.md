@@ -7,7 +7,7 @@ The easiest way to explain how the app works is probably to walk through an exam
 - When the user uploads an image, we create a URL for it and add the URL to `refMap`, a Map in global state. Deleting an image is as simple as removing its entry (and revoking the URL to allow GC).
     - `refMap` maps each URL to a `RefData` object containing its `x`, `y`, `width`, and `height`.
     - **`refMap` is the core of how we work with reference images. Anything that does anything to a reference image reads and/or modifies `refMap`.**
-- Each render, the `Canvas` component loops through `refMap` and renders a `RefImage` component for each entry, passing in `url`, `x`, `y`, `width`, and `height` to tell the `RefImage` where/how to render.
+- Each render, the `Canvas` component loops through `refMap` and renders a `RefImage` component for each entry, passing it its `url` and leaving it to the `RefImage` to look up its own `RefData` in `refMap` to figure out where/how to render.
 - See `useState.ts`, `RefImage.tsx`, `Canvas.tsx`.
 
 ### 2. User rearranges and resizes images
@@ -25,8 +25,8 @@ The easiest way to explain how the app works is probably to walk through an exam
 
 ### 3. User zooms and pans
 
-- Zooming and panning is done by CSS transformations in `Canvas.tsx`.
-- These transformations are applied to `transformWrapper` in `Canvas`, which contains all `RefImage` components and anything that should respond to panning and zooming.
+- Zooming and panning was achieved using anvaka/panzoom.
+- Panzoom is applied to `transformWrapper` in `Canvas`, which contains all `RefImage` components and anything that should respond to panning and zooming.
 - We apply the transforms to `transformWrapper` rather than the `Canvas` div itself so that `Canvas` can remain fullscreen and clickable for functionality like context menu and deselect.
 - Luckily, `Rnd` continues to work when outside the bounds of its parent element (`transformWrapper` in this case), effectively allowing for an infinite canvas.
 - See `Canvas.tsx`.
