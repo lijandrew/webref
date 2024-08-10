@@ -21,11 +21,14 @@ Sections:
   - Pretty straightforward, just show/hide the context menu and set its position
 
 - pan and zoom
+  - Store a reference to the PanZoom instance for world-space calculations
   - Stores scale to pass to Rnds to compensate for scale when dragging and resizing
+  - Provide a function for converting absolute coordinates to world-space coordinates
 
 Everything else, like mouse event logic, file handling, dragging/resizing, UI, etc., is handled by the components themselves.
 */
 
+import { PanZoom } from "panzoom";
 import { create } from "zustand";
 
 type RefData = {
@@ -39,8 +42,8 @@ type RefData = {
 
 type State = {
   //////// Reference map state ////////
-  refMap: Map<string, RefData>; // URL -> RefData, tells RefImage components how to render and used for export (to-do)
-  addRef: (url: string) => void; // Add reference image to map
+  refMap: Map<string, RefData>; // URL -> RefData, tells RefImage components how to render and used for export
+  addRef: (url: string, worldX?: number, worldY?: number) => void; // Add reference image to map at given world-space coordinates (worldX, worldY)
   delRef: (url: string) => void; // Delete reference image from map and revoke URL
   setRef: (url: string, data: RefData) => void; // Update reference image data, used by RefImages to update/sync the store
   topRef: (url: string) => void; // Move reference image to top by deleting and re-adding it
@@ -58,22 +61,37 @@ type State = {
   hideContextMenu: () => void; // Hide context menu
   showContextMenu: (x: number, y: number) => void; // Show context menu at x, y
 
-  //////// Canvas pan and zoom state ////////
-  scale: number; // Zoom level, passed into Rnd to get correct drag and resize deltas when the parent is scaled
+  //////// Pan and zoom state ////////
+  panZoomInstance: PanZoom | null; // The PanZoom instance, needed to calculate world-space coordinates
+  setPanZoomInstance: (panZoomInstance: PanZoom) => void; // Set the PanZoom instance, should only be called once
+  scale: number; // Zoom level, passed into Rnd to get correct drag and resize deltas when parent is scaled
   setScale: (scale: number) => void; // Set zoom level
+  getWorldCoordinates: (
+    absoluteX: number,
+    absoluteY: number,
+  ) => { x: number; y: number }; // Convert absolute coordinates to world-space coordinates
 };
 
-// Zustand with Typescript requires curried create. Notice create<T>() instead of create<T>.
-const useStore = create<State>()((set) => ({
+// Zustand with Typescript requires curried version of create function. Notice create<T>() instead of create<T>.
+const useStore = create<State>()((set, get) => ({
   //////// Reference map state ////////
   refMap: new Map(),
-  addRef: (url: string) => {
+  addRef: (url: string, worldX?: number, worldY?: number) => {
     set((state) => {
       console.log("addRef");
+      if (worldX === undefined || worldY === undefined) {
+        // If worldX and worldY are not provided, center the image in the viewport.
+        const { x, y } = state.getWorldCoordinates(
+          window.innerWidth / 2,
+          window.innerHeight / 2,
+        );
+        worldX = x;
+        worldY = y;
+      }
       const newRefMap = new Map(state.refMap);
       newRefMap.set(url, {
-        x: 0,
-        y: 0,
+        x: worldX,
+        y: worldY,
         width: 300, // Default width 300px for now. Does this compress the image? We don't want that.
         height: "auto", // Setting this to "auto" allows RefImage's img.onload to calculate the correct height.
       });
@@ -151,10 +169,27 @@ const useStore = create<State>()((set) => ({
   },
 
   //////// Canvas pan and zoom state ////////
+  panZoomInstance: null,
+  setPanZoomInstance: (panZoomInstance: PanZoom) => {
+    console.log("setPanZoomInstance");
+    set({ panZoomInstance });
+  },
   scale: 1,
   setScale: (scale: number) => {
     console.log("setScale");
     set({ scale });
+  },
+  getWorldCoordinates: (absoluteX: number, absoluteY: number) => {
+    const panZoomInstance = get().panZoomInstance;
+    const worldCoordinates = { x: 0, y: 0 }; // Default to 0, 0 (should never happen since this should only get called after panZoomInstance has been set).
+    if (panZoomInstance) {
+      const { x, y, scale } = panZoomInstance.getTransform();
+      const originX = -x / scale;
+      const originY = -y / scale;
+      worldCoordinates.x = originX + absoluteX / scale;
+      worldCoordinates.y = originY + absoluteY / scale;
+    }
+    return worldCoordinates;
   },
 }));
 

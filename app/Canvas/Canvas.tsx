@@ -21,6 +21,7 @@ export default function Canvas() {
   const showContextMenu = useStore((state) => state.showContextMenu);
   const hideContextMenu = useStore((state) => state.hideContextMenu);
   const setScale = useStore((state) => state.setScale);
+  const setPanZoomInstance = useStore((state) => state.setPanZoomInstance);
   const canvas = useRef<HTMLDivElement>(null);
   const transformWrapper = useRef<HTMLDivElement>(null);
   // Only for setting panning cursor style. Actual panning and zooming is handled by anvaka/panzoom
@@ -58,6 +59,7 @@ export default function Canvas() {
     return components;
   }
 
+  // This useEffect is for setting up panzoom
   useEffect(() => {
     // anvaka/panzoom
     // Apply to transformWrapper instead of canvas directly.
@@ -77,7 +79,8 @@ export default function Canvas() {
     panZoomInstance.on("zoom", (e: PanZoom) => {
       setScale(e.getTransform().scale); // Update scale in store so Rnds compensate for zoom
     });
-  }, [setScale]);
+    setPanZoomInstance(panZoomInstance);
+  }, [setScale, setPanZoomInstance]);
 
   return (
     <div

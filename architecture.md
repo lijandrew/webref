@@ -25,11 +25,14 @@ The easiest way to explain how the app works is probably to walk through an exam
 
 ### 3. User zooms and pans
 
-- Zooming and panning was achieved using `anvaka/panzoom`.
+- Zooming and panning is achieved using `anvaka/panzoom`.
 - Panzoom is applied to `transformWrapper` in `Canvas`, which contains all `RefImage` components and anything that should respond to panning and zooming.
 - We apply the transforms to `transformWrapper` rather than the `Canvas` div itself so that `Canvas` can remain fullscreen and clickable for functionality like context menu and deselect.
 - Luckily, `Rnd` continues to work when outside the bounds of its parent element (`transformWrapper` in this case), effectively allowing for an infinite canvas.
-- See `Canvas.tsx`.
+- An instance of the `PanZoom` object is kept in the global store
+    - `getWorldCoordinates` uses this to convert absolute (on-screen) coordinates to relative, world-space coordinates (accounting for pan and zoom).
+    - `getWorldCoordinates` is used for many things, such as inserting new images at the center of the viewport.
+- See `useStore.ts`, `Canvas.tsx`.
 
 ### Summary
 

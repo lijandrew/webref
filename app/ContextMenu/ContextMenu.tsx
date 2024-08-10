@@ -24,7 +24,6 @@ export default function ContextMenu() {
   const hideContextMenu = useStore((state) => state.hideContextMenu);
   const [isMac, setIsMac] = useState(false);
 
-  // useCallback caches function so it won't be recreated each render. Needed for useEffect.
   // Handle deleting images.
   const handleDelete = useCallback(() => {
     if (selectedUrls.size == 0) {
@@ -49,7 +48,6 @@ export default function ContextMenu() {
         for (const imageType of imageTypes) {
           const blob = await clipboardItem.getType(imageType);
           const url = URL.createObjectURL(blob);
-          console.log("Pasting image blob");
           addRef(url); // Add image to canvas.
           selectUrl(url); // Add image to selection.
         }

@@ -15,8 +15,11 @@ export default function Drop() {
   const addRef = useStore((state) => state.addRef);
   const clearSelection = useStore((state) => state.clearSelection);
   const selectUrl = useStore((state) => state.selectUrl);
+  const mouseX = useStore((state) => state.mouseX);
+  const mouseY = useStore((state) => state.mouseY);
   const [show, setShow] = useState(false);
   const eventTarget = useRef<EventTarget | null>(null);
+
   useEffect(() => {
     function handleDragStart(e: DragEvent) {
       e.preventDefault();
@@ -55,7 +58,7 @@ export default function Drop() {
         if (file.type.startsWith("image/")) {
           console.log("Dropping image file");
           const url = URL.createObjectURL(file);
-          addRef(url);
+          addRef(url, mouseX, mouseY);
           selectUrl(url);
         }
       }
@@ -66,7 +69,7 @@ export default function Drop() {
       for (const ext of imageExtensions) {
         if (url.endsWith(ext)) {
           console.log("Dropping image URL");
-          addRef(url);
+          addRef(url, mouseX, mouseY);
           selectUrl(url);
           break;
         }
