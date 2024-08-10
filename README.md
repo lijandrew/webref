@@ -45,6 +45,7 @@ Great for those unable/unwilling to install apps (Chromebooks, managed computers
         3. Loop through the values of refMap, which have now been updated to contain all the data you need (x, y, width, height)
         4. I added JSZip to the project. https://stuk.github.io/jszip/ You can use this to zip the files.
 - import from archive
+- more in-depth architecture.md
 
 ## Changelog
 
