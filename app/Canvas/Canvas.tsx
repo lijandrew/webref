@@ -2,8 +2,9 @@
 Canvas.tsx
 
 On each render, creates a RefImage component for each image in refMap.
-Uses anvaka/panzoom to enable panning and zooming of the transformWrapper.
 Handles mouse events for selection, context menu, and panning cursor style.
+Sets up anvaka/panzoom to enable panning and zooming of the transformWrapper
+and stores a reference to the panzoom instance in the store for use elsewhere.
 */
 
 import React, { useState, useRef, useEffect } from "react";
