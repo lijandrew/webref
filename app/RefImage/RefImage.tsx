@@ -46,7 +46,6 @@ export default function RefImage({ url }: RefImageProps) {
   const unselectUrl = useStore((state) => state.unselectUrl);
   const clearSelection = useStore((state) => state.clearSelection);
   const contextMenuShown = useStore((state) => state.contextMenuShown);
-  const showContextMenu = useStore((state) => state.showContextMenu);
   const hideContextMenu = useStore((state) => state.hideContextMenu);
   const refData = useStore((state) => state.refMap.get(url));
   const refImageRnd = useRef<Rnd | null>(null);
@@ -55,31 +54,10 @@ export default function RefImage({ url }: RefImageProps) {
   const lastMouseDownY = useRef<number | null>(null);
   const scale = useStore((state) => state.scale);
 
-  // Sync the position and size of the image with the store
-  function syncToStore() {
-    if (!refImageRnd.current || !refData) return;
-    const { x, y } = refImageRnd.current.getDraggablePosition();
-    const { width, height } = refImageRnd.current.resizable.size;
-    // Only update store if there are changes to prevent infinite loop
-    if (
-      refData.x === x &&
-      refData.y === y &&
-      refData.width === width &&
-      refData.height === height
-    )
-      return;
-    setRef(url, {
-      x,
-      y,
-      width,
-      height,
-    });
-  }
-
   // See comment at top of file for mouse event logic
   function handleMouseDown(e: MouseEvent) {
+    e.stopPropagation(); // Prevent propagating to Canvas
     if (e.button !== 0) return;
-    e.stopPropagation();
     if (contextMenuShown) {
       hideContextMenu();
     }
@@ -94,13 +72,13 @@ export default function RefImage({ url }: RefImageProps) {
 
   // See comment at top of file for mouse event logic
   function handleMouseUp(e: React.MouseEvent) {
-    e.stopPropagation(); // Prevent propagating to Rnd and Canvas
-    if (e.button !== 0) return; // Right mouse button is only for context menu
-    // We are only concerned with mouseUp after a click, not drag
+    e.stopPropagation(); // Prevent propagating to Canvas
+    if (e.button !== 0) return;
     if (
       e.clientX === lastMouseDownX.current &&
       e.clientY === lastMouseDownY.current
     ) {
+      // We are only concerned with mouseUp after a click, not drag
       if (e.shiftKey) {
         if (selectedUrls.has(url)) {
           unselectUrl(url);
@@ -114,42 +92,45 @@ export default function RefImage({ url }: RefImageProps) {
     }
   }
 
-  function handleContextMenu(e: MouseEvent) {
-    // TODO: Show different options than the canvas context menu (e.g. only show delete when right-clicking on an image)
-    e.preventDefault();
-    e.stopPropagation();
-    showContextMenu(e.clientX, e.clientY);
-  }
-
+  // Push delta to all selected images
   function handleDrag(e: DraggableEvent, data: DraggableData) {
     for (const targetUrl of Array.from(selectedUrls)) {
+      // Move all selected images by same amount
       const refData = refMap.get(targetUrl);
       if (!refData) continue;
-      refData.x += data.deltaX; // Move all selected images by same amount
+      refData.x += data.deltaX;
       refData.y += data.deltaY;
       setRef(targetUrl, refData);
     }
   }
 
+  // Push new size to store (also need to push new position for some reason)
   function handleResize() {
-    syncToStore();
+    if (!refImageRnd.current || !refData) return;
+    const { x, y } = refImageRnd.current.getDraggablePosition();
+    const { width, height } = refImageRnd.current.resizable.size;
+    refData.x = x;
+    refData.y = y;
+    refData.width = width;
+    refData.height = height;
+    setRef(url, refData);
   }
 
-  // On load, update store using img's numerical height to overwrite "auto"
+  // On load, update store using img's numerical height to overwrite "auto" + shift half width and height back in order to center
   function handleImgLoad() {
-    if (!img.current || !refImageRnd.current || !refData) return;
-    refImageRnd.current.updateSize({
+    if (!img.current || !refData) return;
+    setRef(url, {
+      x: refData.x - img.current.width / 2,
+      y: refData.y - img.current.height / 2,
       width: img.current.width,
       height: img.current.height,
     });
-    syncToStore();
   }
 
   if (!refData) return null;
   return (
     <Rnd
-      // Set position and size to stay in sync with store
-      // (e.g. after indirect manipulation as part of a selection)
+      // Pull position and size from store at render to respond to indirect updates via the store.
       position={{ x: refData.x, y: refData.y }}
       size={{ width: refData.width, height: refData.height }}
       ref={refImageRnd}
@@ -157,7 +138,6 @@ export default function RefImage({ url }: RefImageProps) {
       onMouseDown={handleMouseDown}
       onDrag={handleDrag}
       onResize={handleResize}
-      onContextMenu={handleContextMenu}
       enableResizing={selectedUrls.has(url)}
       scale={scale}
     >
