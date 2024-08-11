@@ -31,7 +31,7 @@ The easiest way to explain how the app works is probably to walk through an exam
 - Luckily, `Rnd` continues to work when outside the bounds of its parent element (`transformWrapper` in this case), effectively allowing for an infinite canvas.
 - An instance of the `PanZoom` object is kept in the global store
     - `getWorldPosition` uses this to convert absolute (on-screen) coordinates to relative, world-space coordinates (accounting for pan and zoom).
-    - `getWorldPosition` is used for many things, such as inserting new images at the center of the viewport.
+    - `getWorldPosition` is used to add new images at the mouse position (client mouse position needs to be converted into world position).
 - See `useStore.ts`, `Canvas.tsx`.
 
 ### Summary

@@ -23,13 +23,12 @@ Great for those unable/unwilling to install apps (Chromebooks, managed computers
 
 ## To-do
 
-- add images centered on mouse location instead of at (0, 0)
-- prevent selection outline and corner handles from scaling with zoom. how? any way to set fixed px width despite parent scaling?
 - drag select
     - detect drag start and drag end on canvas, on drag move update selection box. will this work in FF?
     - loop through all RefImages and test if intersects selection box using x/y/width/height 
 - selection resizing
 - arrange images optimally
+- prevent selection outline and corner handles from scaling with zoom. how? any way to set fixed px width despite parent scaling?
 - undo/redo - keep stack of "Action" objects - undo function takes in Action and undoes it based on Action type using Action data
 - save useStore state in browser storage using `zustand` persist
     - IndexedDB - how to store blobs?
@@ -49,6 +48,8 @@ Great for those unable/unwilling to install apps (Chromebooks, managed computers
 
 ## Changelog
 
+- add image at cursor world position on drop. for other methods (file browser, paste), insert at center of viewport.
+- center image on point of upload
 - make scroll zoom relative to mouse position (added anvanka/panzoom)
 - Added app architecture explanation markdown file
 - infinite canvas, pan, and zoom! turns out Rnds play well even when moved outside bounds of parent. achieved by simply putting canvas contents in a transform wrapper and applying translate and scale to the wrapper.
