@@ -15,8 +15,7 @@ export default function Drop() {
   const addRef = useStore((state) => state.addRef);
   const clearSelection = useStore((state) => state.clearSelection);
   const selectUrl = useStore((state) => state.selectUrl);
-  const mouseX = useStore((state) => state.mouseX);
-  const mouseY = useStore((state) => state.mouseY);
+  const getWorldPosition = useStore((state) => state.getWorldPosition);
   const [show, setShow] = useState(false);
   const eventTarget = useRef<EventTarget | null>(null);
 
@@ -53,23 +52,22 @@ export default function Drop() {
       e.preventDefault(); // Prevent browser from opening file.
       clearSelection();
       if (!e.dataTransfer) return;
-      // I think e.dataTransfer.files is more reliable than e.dataTransfer.items.
+      const { x, y } = getWorldPosition(e.clientX, e.clientY); // Convert mouse position to world position to use in addRef.
       for (const file of Array.from(e.dataTransfer.files)) {
         if (file.type.startsWith("image/")) {
           console.log("Dropping image file");
           const url = URL.createObjectURL(file);
-          addRef(url, mouseX, mouseY);
+          addRef(url, x, y);
           selectUrl(url);
         }
       }
-      // Experimental: accept drag and drop image link from another browser window.
-      // https://stackoverflow.com/questions/11972963/accept-drag-drop-of-image-from-another-browser-window
+      // Accept drag and drop image link from another browser window.
       const url = e.dataTransfer.getData("URL");
       const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
       for (const ext of imageExtensions) {
         if (url.endsWith(ext)) {
           console.log("Dropping image URL");
-          addRef(url, mouseX, mouseY);
+          addRef(url, x, y);
           selectUrl(url);
           break;
         }
@@ -93,7 +91,7 @@ export default function Drop() {
       document.removeEventListener("dragleave", handleDragLeave);
       document.removeEventListener("drop", handleDrop);
     };
-  }, [addRef, clearSelection, selectUrl]);
+  }, [addRef, clearSelection, getWorldPosition, selectUrl]);
 
   if (!show) {
     return null;
