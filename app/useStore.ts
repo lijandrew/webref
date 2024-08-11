@@ -66,10 +66,10 @@ type State = {
   setPanZoomInstance: (panZoomInstance: PanZoom) => void; // Set the PanZoom instance, should only be called once
   scale: number; // Zoom level, passed into Rnd to get correct drag and resize deltas when parent is scaled
   setScale: (scale: number) => void; // Set zoom level
-  getWorldCoordinates: (
-    absoluteX: number,
-    absoluteY: number,
-  ) => { x: number; y: number }; // Convert absolute coordinates to world-space coordinates
+  getWorldPosition: (
+    clientX: number,
+    clientY: number,
+  ) => { x: number; y: number }; // Convert client (absolute) coordinates to world-space coordinates
 };
 
 // Zustand with Typescript requires curried version of create function. Notice create<T>() instead of create<T>.
@@ -81,7 +81,7 @@ const useStore = create<State>()((set, get) => ({
       console.log("addRef");
       if (worldX === undefined || worldY === undefined) {
         // If worldX and worldY are not provided, center the image in the viewport.
-        const { x, y } = state.getWorldCoordinates(
+        const { x, y } = state.getWorldPosition(
           window.innerWidth / 2,
           window.innerHeight / 2,
         );
@@ -179,15 +179,15 @@ const useStore = create<State>()((set, get) => ({
     console.log("setScale");
     set({ scale });
   },
-  getWorldCoordinates: (absoluteX: number, absoluteY: number) => {
+  getWorldPosition: (clientX: number, clientY: number) => {
     const panZoomInstance = get().panZoomInstance;
     const worldCoordinates = { x: 0, y: 0 }; // Default to 0, 0 (should never happen since this should only get called after panZoomInstance has been set).
     if (panZoomInstance) {
       const { x, y, scale } = panZoomInstance.getTransform();
       const originX = -x / scale;
       const originY = -y / scale;
-      worldCoordinates.x = originX + absoluteX / scale;
-      worldCoordinates.y = originY + absoluteY / scale;
+      worldCoordinates.x = originX + clientX / scale;
+      worldCoordinates.y = originY + clientY / scale;
     }
     return worldCoordinates;
   },
