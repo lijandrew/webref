@@ -14,8 +14,6 @@ export default function UploadButton() {
   const addRef = useStore((state) => state.addRef);
   const selectUrl = useStore((state) => state.selectUrl);
   const clearSelection = useStore((state) => state.clearSelection);
-  const mouseX = useStore((state) => state.mouseX);
-  const mouseY = useStore((state) => state.mouseY);
 
   // Creates new RefImages and selects them all.
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -24,7 +22,7 @@ export default function UploadButton() {
     for (const file of files) {
       console.log("Opening image file");
       const url = URL.createObjectURL(file); // Create URL referencing file
-      addRef(url, mouseX, mouseY);
+      addRef(url);
       selectUrl(url);
     }
     e.target.value = ""; // Clear input value after adding the references
