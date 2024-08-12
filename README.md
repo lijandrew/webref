@@ -12,22 +12,23 @@ Great for those unable/unwilling to install apps (Chromebooks, managed computers
 
 ## Features
 
+- WIP!
 - Zoomable, pannable, infinite canvas
-- Convenient ways to open images
-    - Drag and drop images directly from websites
-    - Paste images from clipboard
-    - Or just upload or drag and drop images from files
 - Move and resize images
 - Keyboard shortcuts
-- WIP!
+- Supports GIFs!
+- Convenient ways to open images
+    - Drag and drop from websites
+    - ![drop-url](https://github.com/user-attachments/assets/3ad98dd1-f48a-41e7-a66e-ff128df278ff)
+    - Paste from clipboard
+    - ![paste](https://github.com/user-attachments/assets/31abb83a-ca4c-4cf3-a468-4056481345b0)
+    - Drag and drop from files
+    - ![drop-file](https://github.com/user-attachments/assets/e3b11d5d-836a-4cf1-a9fd-6acf8395319e)
 
 ## To-do
 
-- drag select
-    - detect drag start and drag end on canvas, on drag move update selection box. will this work in FF?
-    - loop through all RefImages and test if intersects selection box using x/y/width/height 
 - selection resizing
-- arrange images optimally
+- button to arrange images optimally
 - prevent selection outline and corner handles from scaling with zoom. how? any way to set fixed px width despite parent scaling?
 - undo/redo - keep stack of "Action" objects - undo function takes in Action and undoes it based on Action type using Action data
 - save useStore state in browser storage using `zustand` persist
@@ -48,6 +49,7 @@ Great for those unable/unwilling to install apps (Chromebooks, managed computers
 
 ## Changelog
 
+- drag select
 - add image at cursor world position on drop. for other methods (file browser, paste), insert at center of viewport.
 - center image on point of upload
 - make scroll zoom relative to mouse position (added anvanka/panzoom)
