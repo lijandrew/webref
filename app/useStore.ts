@@ -130,7 +130,7 @@ const useStore = create<State>()((set, get) => ({
 
   //////// Selection state ////////
   selectedUrls: new Set(),
-  selectUrl: (url: string, moveToTop: boolean = true) => {
+  selectUrl: (url: string, moveToTop: boolean) => {
     console.log("selectUrl");
     set((state) => {
       const newSelectedUrls = new Set(state.selectedUrls);

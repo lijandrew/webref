@@ -23,7 +23,7 @@ export default function UploadButton() {
       console.log("Opening image file");
       const url = URL.createObjectURL(file); // Create URL referencing file
       addRef(url);
-      selectUrl(url);
+      selectUrl(url, true);
     }
     e.target.value = ""; // Clear input value after adding the references
   }

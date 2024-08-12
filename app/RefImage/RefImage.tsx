@@ -66,7 +66,7 @@ export default function RefImage({ url }: RefImageProps) {
     if (e.shiftKey) return;
     if (!selectedUrls.has(url)) {
       clearSelection();
-      selectUrl(url);
+      selectUrl(url, true);
     }
   }
 
@@ -83,11 +83,11 @@ export default function RefImage({ url }: RefImageProps) {
         if (selectedUrls.has(url)) {
           unselectUrl(url);
         } else {
-          selectUrl(url);
+          selectUrl(url, true);
         }
       } else {
         clearSelection();
-        selectUrl(url);
+        selectUrl(url, true);
       }
     }
   }

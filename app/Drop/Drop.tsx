@@ -58,7 +58,7 @@ export default function Drop() {
           console.log("Dropping image file");
           const url = URL.createObjectURL(file);
           addRef(url, x, y);
-          selectUrl(url);
+          selectUrl(url, true);
         }
       }
       // Accept drag and drop image link from another browser window.
@@ -68,7 +68,7 @@ export default function Drop() {
         if (url.endsWith(ext)) {
           console.log("Dropping image URL");
           addRef(url, x, y);
-          selectUrl(url);
+          selectUrl(url, true);
           break;
         }
       }

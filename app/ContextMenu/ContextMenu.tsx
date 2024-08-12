@@ -49,7 +49,7 @@ export default function ContextMenu() {
           const blob = await clipboardItem.getType(imageType);
           const url = URL.createObjectURL(blob);
           addRef(url); // Add image to canvas.
-          selectUrl(url); // Add image to selection.
+          selectUrl(url, true); // Add image to selection.
         }
       }
     } catch (err: unknown) {
@@ -69,7 +69,7 @@ export default function ContextMenu() {
 
   const handleSelectAll = useCallback(() => {
     for (const url of Array.from(refMap.keys())) {
-      selectUrl(url);
+      selectUrl(url, false);
     }
   }, [refMap, selectUrl]);
 
