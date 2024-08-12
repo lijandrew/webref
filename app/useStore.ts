@@ -50,7 +50,7 @@ type State = {
 
   //////// Selection state ////////
   selectedUrls: Set<string>; // Set of selected URLs
-  selectUrl: (url: string) => void; // Add URL to selection and move reference image to top
+  selectUrl: (url: string, moveToTop: boolean) => void; // Add URL to selection and move reference image to top
   unselectUrl: (url: string) => void; // Remove URL from selection
   clearSelection: () => void; // Clear all selections
 
@@ -130,12 +130,12 @@ const useStore = create<State>()((set, get) => ({
 
   //////// Selection state ////////
   selectedUrls: new Set(),
-  selectUrl: (url: string) => {
+  selectUrl: (url: string, moveToTop: boolean = true) => {
     console.log("selectUrl");
     set((state) => {
       const newSelectedUrls = new Set(state.selectedUrls);
       newSelectedUrls.add(url);
-      if (state.selectedUrls.size === 0) {
+      if (moveToTop && state.selectedUrls.size === 0) {
         state.topRef(url); // Move selected reference image to top if this is the first selection
         // get().topRef(url); <-- I think zustand get() just returns the previous State in case you need it when not using set(state => result)
       }
