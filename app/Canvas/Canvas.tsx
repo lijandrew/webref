@@ -24,8 +24,10 @@ export default function Canvas() {
   const hideContextMenu = useStore((state) => state.hideContextMenu);
   const setScale = useStore((state) => state.setScale);
   const setPanZoomInstance = useStore((state) => state.setPanZoomInstance);
+  const getWorldPosition = useStore((state) => state.getWorldPosition);
   const canvas = useRef<HTMLDivElement>(null);
   const transformWrapper = useRef<HTMLDivElement>(null);
+  const leftMouseDown = useRef(false);
   const [selecting, setSelecting] = useState(false);
   const [selectionStart, setSelectionStart] = useState({ x: 0, y: 0 });
   const [selectionEnd, setSelectionEnd] = useState({ x: 0, y: 0 });
@@ -41,10 +43,7 @@ export default function Canvas() {
       // Ignore if shift key is pressed (for shift-click forgiveness)
       if (e.shiftKey) return;
       clearSelection();
-      // Start dragging selection box
-      setSelecting(true);
-      setSelectionStart({ x: e.clientX, y: e.clientY });
-      setSelectionEnd({ x: e.clientX, y: e.clientY });
+      leftMouseDown.current = true;
     } else if (e.button === 1) {
       // MMB
       setPanning(true);
@@ -55,22 +54,7 @@ export default function Canvas() {
     if (e.button === 0) {
       // LMB release, end selection and calculate selected images
       setSelecting(false);
-      const x = Math.min(selectionStart.x, selectionEnd.x);
-      const y = Math.min(selectionStart.y, selectionEnd.y);
-      const width = Math.abs(selectionEnd.x - selectionStart.x);
-      const height = Math.abs(selectionEnd.y - selectionStart.y);
-      for (const url of Array.from(refMap.keys())) {
-        const refData = refMap.get(url);
-        if (!refData) continue;
-        if (
-          refData.x + refData.width > x &&
-          refData.x < x + width &&
-          Number(refData.y) + Number(refData.height) > y &&
-          refData.y < y + height
-        ) {
-          selectUrl(url, false); // Do not move selected images to top when drag selecting
-        }
-      }
+      leftMouseDown.current = false;
     } else if (e.button === 1) {
       // MMB
       setPanning(false);
@@ -78,8 +62,41 @@ export default function Canvas() {
   }
 
   function handleMouseMove(e: React.MouseEvent) {
+    if (leftMouseDown.current && !selecting) {
+      // Only set "selecting" state after mouse has moved to differentiate from click
+      setSelecting(true);
+      setSelectionStart({ x: e.clientX, y: e.clientY });
+      setSelectionEnd({ x: e.clientX, y: e.clientY });
+    }
     if (selecting) {
       setSelectionEnd({ x: e.clientX, y: e.clientY });
+      selectImagesInSelection();
+    }
+  }
+
+  function selectImagesInSelection() {
+    clearSelection();
+    // Start and end are in screen coordinates, convert to world coordinates
+    const { x: x0, y: y0 } = getWorldPosition(
+      selectionStart.x,
+      selectionStart.y,
+    );
+    const { x: x1, y: y1 } = getWorldPosition(selectionEnd.x, selectionEnd.y);
+    const x = Math.min(x0, x1);
+    const y = Math.min(y0, y1);
+    const width = Math.abs(x1 - x0); // Width and height must be calculated using converted coordinates to account for zoom
+    const height = Math.abs(y1 - y0);
+    for (const url of Array.from(refMap.keys())) {
+      const refData = refMap.get(url);
+      if (!refData) continue;
+      if (
+        refData.x + refData.width > x &&
+        refData.x < x + width &&
+        Number(refData.y) + Number(refData.height) > y &&
+        refData.y < y + height
+      ) {
+        selectUrl(url, false); // Do not move selected images to top when drag selecting
+      }
     }
   }
 
@@ -145,10 +162,11 @@ export default function Canvas() {
         }}
       />
       <div
-        // When panning, cover page with fixed transparent div to prevent other elements from changing the pointer style
-        className={styles.panCover}
+        // Covers the canvas with a transparent div to prevent child elements from receiving mouse events during certain operations
+        className={styles.cover}
         style={{
-          display: panning ? "block" : "none",
+          display: panning || selecting ? "block" : "none",
+          cursor: panning ? "grabbing" : "crosshair",
         }}
       />
     </div>

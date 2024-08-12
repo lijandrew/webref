@@ -67,9 +67,9 @@ type State = {
   scale: number; // Zoom level, passed into Rnd to get correct drag and resize deltas when parent is scaled
   setScale: (scale: number) => void; // Set zoom level
   getWorldPosition: (
-    clientX: number,
-    clientY: number,
-  ) => { x: number; y: number }; // Convert client (absolute) coordinates to world-space coordinates
+    screenX: number,
+    screenY: number,
+  ) => { x: number; y: number }; // Convert absolute ("screen") coordinates to world-space coordinates
 };
 
 // Zustand with Typescript requires curried version of create function. Notice create<T>() instead of create<T>.
@@ -179,15 +179,15 @@ const useStore = create<State>()((set, get) => ({
     console.log("setScale");
     set({ scale });
   },
-  getWorldPosition: (clientX: number, clientY: number) => {
+  getWorldPosition: (screenX: number, screenY: number) => {
     const panZoomInstance = get().panZoomInstance;
     const worldCoordinates = { x: 0, y: 0 }; // Default to 0, 0 (should never happen since this should only get called after panZoomInstance has been set).
     if (panZoomInstance) {
       const { x, y, scale } = panZoomInstance.getTransform();
       const originX = -x / scale;
       const originY = -y / scale;
-      worldCoordinates.x = originX + clientX / scale;
-      worldCoordinates.y = originY + clientY / scale;
+      worldCoordinates.x = originX + screenX / scale;
+      worldCoordinates.y = originY + screenY / scale;
     }
     return worldCoordinates;
   },
