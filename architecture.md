@@ -6,6 +6,7 @@ The easiest way to explain how the app works is probably to walk through an exam
 
 - When the user uploads an image, we create a URL for it and add the URL to `refMap`, a Map in global state. Deleting an image is as simple as removing its entry (and revoking the URL to allow GC).
 - `refMap` maps each URL to a `RefData` object containing its `x`, `y`, `width`, and `height`.
+- Anything involving reference images goes through `refMap` or its helper functions.
 - Each render, the `Canvas` component loops through `refMap` and renders a `RefImage` component for each entry, passing it its `url` and leaving it to the `RefImage` to look up its own `RefData` in `refMap` to figure out where/how to render.
 - See `useState.ts`, `RefImage.tsx`, `Canvas.tsx`.
 
@@ -37,10 +38,3 @@ The easiest way to explain how the app works is probably to walk through an exam
         - Adding new images at the cursor position
         - Calculating selection box collisions with RefImages
 - See `useStore.ts`, `Canvas.tsx`.
-
-### Summary
-
-- The app's functionality revolves around the zustand global store.
-    - Anything involving reference images goes through `refMap` or its helper functions.
-    - The global store also contains other widely-used state information, such as a Set tracking which reference images are selected. See comments in `useStore.ts` for more.
-- Everything else, like mouse events, file handling, dragging, resizing, file dropping, and one-off logics, is handled by the components themselves.
