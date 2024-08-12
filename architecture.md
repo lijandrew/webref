@@ -32,6 +32,7 @@ The easiest way to explain how the app works is probably to walk through an exam
 - An instance of the `PanZoom` object is kept in the global store
     - `getWorldPosition` uses this to convert absolute (on-screen) coordinates to relative, world-space coordinates (accounting for pan and zoom).
     - `getWorldPosition` is used to add new images at the mouse position (client mouse position needs to be converted into world position).
+    - `getWorldPosition` is also used to convert mouse screen position to world position to calculate drag selection box collisions with RefImages.
 - See `useStore.ts`, `Canvas.tsx`.
 
 ### Summary

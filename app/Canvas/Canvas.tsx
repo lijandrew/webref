@@ -74,6 +74,7 @@ export default function Canvas() {
     }
   }
 
+  // Select images that are within the selection box, taking into account zoom and pan (converts screen coordinates to world coordinates)
   function selectImagesInSelection() {
     clearSelection();
     // Start and end are in screen coordinates, convert to world coordinates
