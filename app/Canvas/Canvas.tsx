@@ -40,10 +40,11 @@ export default function Canvas() {
       if (contextMenuShown) {
         hideContextMenu();
       }
-      // Ignore if shift key is pressed (for shift-click forgiveness)
-      if (e.shiftKey) return;
-      clearSelection();
       leftMouseDown.current = true;
+      // Clear selection if not shift
+      if (!e.shiftKey) {
+        clearSelection();
+      }
     } else if (e.button === 1) {
       // MMB
       setPanning(true);
@@ -70,13 +71,15 @@ export default function Canvas() {
     }
     if (selecting) {
       setSelectionEnd({ x: e.clientX, y: e.clientY });
-      selectImagesInSelection();
+      selectImagesInSelection(e.shiftKey);
     }
   }
 
   // Select images that are within the selection box, taking into account zoom and pan (converts screen coordinates to world coordinates)
-  function selectImagesInSelection() {
-    clearSelection();
+  function selectImagesInSelection(shiftKey: boolean) {
+    if (!shiftKey) {
+      clearSelection();
+    }
     // Start and end are in screen coordinates, convert to world coordinates
     const { x: x0, y: y0 } = getWorldPosition(
       selectionStart.x,

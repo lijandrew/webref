@@ -105,6 +105,7 @@ export default function RefImage({ url }: RefImageProps) {
   }
 
   // Push new size to store (also need to push new position for some reason)
+  // TODO: Multi-selection resize?
   function handleResize() {
     if (!refImageRnd.current || !refData) return;
     const { x, y } = refImageRnd.current.getDraggablePosition();

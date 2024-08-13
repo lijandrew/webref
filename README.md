@@ -51,6 +51,7 @@ Great for those unable/unwilling to install apps (Chromebooks, managed computers
 
 ## Changelog
 
+- hold shift when dragging selection box on canvas to add to selection
 - drag select
 - add image at cursor world position on drop. for other methods (file browser, paste), insert at center of viewport.
 - center image on point of upload
