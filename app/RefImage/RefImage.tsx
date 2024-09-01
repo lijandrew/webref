@@ -117,7 +117,8 @@ export default function RefImage({ url }: RefImageProps) {
     setRef(url, refData);
   }
 
-  // On load, update store using img's numerical height to overwrite "auto" + shift half width and height back in order to center
+  // This is a hacky way to force the RefImage Rnd to calculate its own height instead of leaving it as "auto".
+  // Also shifts itself (width/2) left and (height/2) up to do a one-time centering.
   function handleImgLoad() {
     if (!img.current || !refData) return;
     setRef(url, {
